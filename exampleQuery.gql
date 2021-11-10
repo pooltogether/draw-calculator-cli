@@ -1,0 +1,48 @@
+{
+    ticket(id: "0xdd4d117723c257cee402285d3acf218e9a8236e1") {
+        accounts(first: 1000, skip: 0, where: { zeroBalanceOccurredAt_gt: 500 }) {
+            #drawStartTime
+            id
+            delegateBalance
+            zeroBalanceOccurredAt
+            twabs(
+                orderBy: timestamp
+                orderDirection: desc
+                first: 1
+                where: { timestamp_lte: 900000000 } # drawEndTime
+            ) {
+                amount
+                timestamp
+            }
+        }
+    }
+}
+
+{
+    ticket(id: "0xdd4d117723c257cee402285d3acf218e9a8236e1") {
+        accounts(first: 100, skip: 10, where: { zeroBalanceOccurredAt: null }) {
+            delegateBalance
+            zeroBalanceOccurredAt
+            # get twab beforeOrAt drawStartTime
+            beforeOrAtDrawStartTime: twabs(
+                orderBy: timestamp
+                orderDirection: desc
+                first: 1
+                where: { timestamp_lte: 900000000 } #drawStartTime
+            ) {
+                amount
+                timestamp
+            }
+            # now get twab beforeOrAt drawEndTime (may be the same as above)
+            beforeOrAtDrawEndTime: twabs(
+                orderBy: timestamp
+                orderDirection: desc
+                first: 1
+                where: { timestamp_lte: 900000000 } #drawEndTime
+            ) {
+                amount
+                timestamp
+            }
+        }
+    }
+}
