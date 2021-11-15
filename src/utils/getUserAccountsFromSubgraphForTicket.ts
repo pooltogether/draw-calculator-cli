@@ -1,9 +1,7 @@
 import { getSubgraphUrlForNetwork } from "./getSubgraphUrlForNetwork";
 import { request, gql } from "graphql-request";
-import { decryptCrowdsale } from "ethers/node_modules/@ethersproject/json-wallets";
-import { calculateUserBalanceFromTwab } from "./calculateUserBalanceFromTwab";
 
-export async function getUserBalancesFromSubgraphForTicket(
+export async function getUserAccountsFromSubgraphForTicket(
     network: string,
     ticket: string,
     drawStartTime: number,
@@ -24,6 +22,7 @@ export async function getUserBalancesFromSubgraphForTicket(
                 id
                 delegateBalance
                 zeroBalanceOccurredAt
+                lastUpdatedTimestamp
                 twabs(
                     orderBy: timestamp
                     orderDirection: desc
@@ -32,6 +31,7 @@ export async function getUserBalancesFromSubgraphForTicket(
                 ) {
                     amount
                     timestamp
+                    delegateBalance
                 }
             }
         }
@@ -69,6 +69,7 @@ export async function getUserBalancesFromSubgraphForTicket(
                     id
                     delegateBalance
                     zeroBalanceOccurredAt
+                    lastUpdatedTimestamp
                     # get twab beforeOrAt drawStartTime
                     beforeOrAtDrawStartTime: twabs(
                         orderBy: timestamp
@@ -78,6 +79,7 @@ export async function getUserBalancesFromSubgraphForTicket(
                     ) {
                         amount
                         timestamp
+                        delegateBalance
                     }
                     # now get twab beforeOrAt drawEndTime (may be the same as above)
                     beforeOrAtDrawEndTime: twabs(
@@ -88,6 +90,7 @@ export async function getUserBalancesFromSubgraphForTicket(
                     ) {
                         amount
                         timestamp
+                        delegateBalance
                     }
                 }
             }
@@ -116,18 +119,6 @@ export async function getUserBalancesFromSubgraphForTicket(
             break;
         }
     }
-    // staticAccountQueryResults.forEach((element: any) => {
-    //     console.log(JSON.stringify(element));
-    // });
-    // console.log(staticAccountQueryResults[0]);
-
-    // calculate user balances from twabs
-    const staticUserBalances: any[] = staticAccountQueryResults[0].map((element: any) => {
-        return calculateUserBalanceFromTwab(element);
-    });
-    const dynamicUserBalances: any[] = dynamicAccountQueryResults[0].map((element: any) => {
-        return calculateUserBalanceFromTwab(element);
-    });
-    const allUserBalances: any[] = staticUserBalances.concat(dynamicUserBalances);
-    return allUserBalances;
+    let allUserBalances: any[] = staticAccountQueryResults.concat(dynamicAccountQueryResults);
+    return allUserBalances[0];
 }

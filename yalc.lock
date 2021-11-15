@@ -1,0 +1,9 @@
+{
+  "version": "v1",
+  "packages": {
+    "@pooltogether/draw-calculator-js": {
+      "signature": "6d222eba73a7c71c1eaaaca0453f3546",
+      "file": true
+    }
+  }
+}

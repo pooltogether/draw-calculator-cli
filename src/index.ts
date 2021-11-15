@@ -1,19 +1,42 @@
 import { Command } from "commander";
 import { getDrawBufferAddress } from "./utils/getDrawBufferAddress";
-import { getDrawTimestampFromDrawId } from "./utils/getDrawTimestampFromDrawId";
+import { getDrawFromDrawId } from "./utils/getDrawFromDrawId";
 import { getPrizeDistribution } from "./utils/getPrizeDistribution";
 import { getPrizeDistributionBufferAddress } from "./utils/getPrizeDistributionAddress";
 import { getRpcProvider } from "./utils/getRpcProvider";
 import { getTotalSupplyFromTicket } from "./utils/getTotalSupplyFromTicket";
-import { getUserBalancesFromSubgraphForTicket } from "./utils/getUserBalancesFromSubgraphForTicket";
+import { getUserAccountsFromSubgraphForTicket } from "./utils/getUserAccountsFromSubgraphForTicket";
 import { validateInputs } from "./utils/validateInputs";
-import { UserBalance } from "./types";
+import { NormalizedUserBalance, UserBalance } from "./types";
+import { filterUndef } from "./utils/filterUndefinedValues";
+import { writeFileSync } from "fs";
 
-import Piscina from "piscina";
+import { BigNumber } from "ethers";
+import { calculateUserBalanceFromAccount } from "./utils/calculateUserBalanceFromAccount";
+import { normalizeUserBalances } from "./utils/normalizeUserBalances";
+import { runCalculateDrawResultsWorker } from "./utils/runCalculateDrawResultsWorker";
 
-const piscina = new Piscina({
-    filename: new URL("./workers/calculatePrizeForUser.ts", import.meta.url).href,
-});
+const debug = require("debug")("pt:draw_calculator-cli");
+
+export type Draw = {
+    drawId: number;
+    winningRandomNumber: BigNumber;
+    timestamp: number;
+    beaconPeriodStartedAt?: number;
+    beaconPeriodSeconds?: number;
+};
+
+export type PrizeDistribution = {
+    matchCardinality: number;
+    numberOfPicks: BigNumber;
+    tiers: number[];
+    bitRangeSize: number;
+    prize: BigNumber;
+    startTimestampOffset: number;
+    endTimestampOffset: number;
+    maxPicksPerUser: number;
+    expiryDuration: number;
+};
 
 async function main() {
     console.log(`Running program`);
@@ -51,35 +74,74 @@ async function main() {
     // lookup PrizeDistrbution address for network
     const prizeDistributionBufferAddress = getPrizeDistributionBufferAddress(network); // refactor to use same code as getDrawBufferAddress
     // get PrizeDistribution for drawId
-    const prizeDistribution = await getPrizeDistribution(
+    const prizeDistribution: PrizeDistribution = await getPrizeDistribution(
         prizeDistributionBufferAddress,
         drawId,
         provider
     );
-    // get draw timestamp using drawId
-    const drawTimestamp = await getDrawTimestampFromDrawId(drawId, drawBufferAddress, provider);
+    console.log("got prizeDistribution: ", JSON.stringify(prizeDistribution));
+    console.log(`prizeDistribution.numberOfPicks `, prizeDistribution.numberOfPicks);
 
-    // get ticket totalSupply -- TODO: should this be totalAverageTicketSupply between (drawTimestamp + prizeDistribution.startTimestampOffset, drawTimestamp + prizeDistribution.endTimestampOffset)
-    const ticketTotalSupply = await getTotalSupplyFromTicket(ticket, provider);
+    // get draw timestamp using drawId
+    const draw: Draw = await getDrawFromDrawId(drawId, drawBufferAddress, provider);
+
+    console.log(`draw: ${JSON.stringify(draw)}`);
+    console.log(`draw.timestamp: ${draw.timestamp}`);
+    throw new Error("stop");
+
+    const drawTimestamp = draw.timestamp;
+    const drawStartTimestamp = drawTimestamp - prizeDistribution.startTimestampOffset;
+    const drawEndTimestamp = drawTimestamp - prizeDistribution.endTimestampOffset;
 
     // get accounts from subgraph for ticket and network
-    const userBalances = await getUserBalancesFromSubgraphForTicket(
+    const userAccounts = await getUserAccountsFromSubgraphForTicket(
         network,
         ticket,
-        drawTimestamp + prizeDistribution.startTimestampOffset,
-        drawTimestamp + prizeDistribution.endTimestampOffset
+        drawStartTimestamp,
+        drawEndTimestamp
     );
 
-    // run worker for each userBalance
-    const prizes = userBalances.map(async (userBalance: UserBalance) => {
-        console.log(`creating thread for ${userBalance.address}...`);
-        const result = await piscina.run(userBalances);
+    // calculate user balances from twabs
+    const userBalances = userAccounts.map((twab: any) => {
+        // console.log("\n this twab: ", twab);
 
-        return result;
+        const userBalance = calculateUserBalanceFromAccount(
+            twab,
+            drawStartTimestamp,
+            drawEndTimestamp
+        );
+        if (!userBalance) {
+            console.log(`user ${twab.id} did not have a balance for this draw`);
+            return;
+        }
+        return userBalance;
     });
 
-    // now write to outputDir as JSON blob
+    console.log("userBalances length ", userBalances.length);
+    // console.log(userBalances);
 
-    console.log(`exiting program`);
+    // filter out undefined balances
+    const filteredUserBalances = filterUndef<UserBalance>(userBalances);
+    console.log("filteredUserBalances length ", filteredUserBalances.length);
+    // normalize
+    console.log(`normalizing balances..`);
+
+    const ticketTotalSupply = await getTotalSupplyFromTicket(
+        ticket,
+        drawStartTimestamp,
+        drawEndTimestamp,
+        provider
+    );
+    console.log(`got total ticket supply ${ticketTotalSupply}`);
+    const normalizedUserBalances = normalizeUserBalances(filteredUserBalances, ticketTotalSupply);
+
+    // run worker for each userBalance
+    const prizes = runCalculateDrawResultsWorker(normalizedUserBalances, prizeDistribution, draw);
+
+    // now write to outputDir as JSON blob
+    // console.log(`prizes: ${prizes.length}`);
+    // writeFileSync(outputDir, JSON.stringify(prizes, null, 2));
+
+    console.log(`exiting program`); // exit with zero status - can commander do this?
 }
 main();

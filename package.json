@@ -11,6 +11,8 @@
         "node": ">=10"
     },
     "scripts": {
+        "clean": "rm -rf node_modules && rm -rf dist/",
+        "reinstall": "rm -rf node_modules && rm -rf dist/ && yarn",
         "start": "tsdx watch",
         "build": "tsdx build",
         "test": "tsdx test",
@@ -18,6 +20,12 @@
         "prepare": "tsdx build",
         "size": "size-limit",
         "analyze": "size-limit --why"
+    },
+    "dependencies": {
+        "@pooltogether/draw-calculator-js": "file:.yalc/@pooltogether/draw-calculator-js",
+        "graphql": "^16.0.1",
+        "graphql-request": "^3.6.1",
+        "yalc": "^1.0.0-pre.53"
     },
     "devDependencies": {
         "@pooltogether/v4-mainnet": "^1.0.1",
@@ -48,10 +56,5 @@
     },
     "name": "draw-calculator-cli",
     "author": "Aodhgan",
-    "module": "dist/draw-calculator-cli.esm.js",
-    "dependencies": {
-        "@pooltogether/draw-calculator-js": "^1.0.2",
-        "graphql": "^16.0.1",
-        "graphql-request": "^3.6.1"
-    }
+    "module": "dist/draw-calculator-cli.esm.js"
 }
