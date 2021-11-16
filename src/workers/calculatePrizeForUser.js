@@ -1,11 +1,12 @@
 const drawCalculatorLib = require("@pooltogether/draw-calculator-js");
 const { BigNumber } = require("ethers");
 
+const debug = require("debug")("pt:draw-calculator-cli");
+
 module.exports = function calculatePrizeForUser({ user, prizeDistribution, draw }) {
-    // formats the correct input for draw-calculate-js
-    // console.log("in worker: draw: ", JSON.stringify(draw));
-    // console.log("in worker: user: ", JSON.stringify(user));
-    // console.log("in worker: prizeDistribution: ", JSON.stringify(prizeDistribution));
+    if (BigNumber.from(user.balance).lt(0)) {
+        throw new Error(`user ${JSON.stringify(user)} has negative balance`);
+    }
 
     const _user = {
         address: user.address,
@@ -13,24 +14,15 @@ module.exports = function calculatePrizeForUser({ user, prizeDistribution, draw 
     };
     const _draw = draw;
 
-    console.log(
-        "worker thread: running calculateDrawResults with:",
-        "\n user.normalizedBalance",
-        JSON.stringify(user.balance),
-        "\n prizeDistribution: ",
-        JSON.stringify(prizeDistribution),
-        "\n _draw: ",
-        JSON.stringify(_draw),
-        "\n _user: ",
-        JSON.stringify(_user)
-    );
-
-    // calls calculateDrawResults
+    // calls calculateDrawResults js lib
     let results;
     try {
-        results = drawCalculatorLib.calculateDrawResults(prizeDistribution, _draw, _user);
+        console.log(
+            `calculateDrawResults for ${_user.address} with balance: ${_user.normalizedBalances[0]}`
+        );
+        results = drawCalculatorLib.calculateDrawResults(prizeDistribution, _draw, _user); // all sync
     } catch (error) {
-        console.log("error calling draw calc: ", error);
+        debug("error calling draw calc: ", error);
         return;
     }
 
@@ -48,7 +40,7 @@ module.exports = function calculatePrizeForUser({ user, prizeDistribution, draw 
         };
     });
 
-    console.log(`user ${_user.address} had ${prizes.length} prizes`);
+    debug(`worker thread: result: user ${_user.address} had ${prizes.length} prizes`);
 
     return prizes;
 };

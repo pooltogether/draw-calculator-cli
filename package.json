@@ -22,7 +22,7 @@
         "analyze": "size-limit --why"
     },
     "dependencies": {
-        "@pooltogether/draw-calculator-js": "file:.yalc/@pooltogether/draw-calculator-js",
+        "@pooltogether/draw-calculator-js": "1.0.3",
         "graphql": "^16.0.1",
         "graphql-request": "^3.6.1",
         "yalc": "^1.0.0-pre.53"

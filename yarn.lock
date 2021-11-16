@@ -1824,16 +1824,18 @@
     "@pooltogether/owner-manager-contracts" "1.1.0"
     "@pooltogether/yield-source-interface" "1.3.0"
 
-"@pooltogether/draw-calculator-js@^1.0.0-beta.25":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@pooltogether/draw-calculator-js/-/draw-calculator-js-1.0.2.tgz#9cb16681d03c2eaf2c9935d4b5e333bfc8364b55"
-  integrity sha512-4hRjPPLzRuKQ220VH1gBKSKoij3vze/tPdgrXrha2ZUUPduA5NUVKehTDxIxSgdeXmlDU55yMcKqMaGMpDVxCw==
+"@pooltogether/draw-calculator-js@1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@pooltogether/draw-calculator-js/-/draw-calculator-js-1.0.3.tgz#7af4fb981c5561c6a63cf47bbdb99e9a93734301"
+  integrity sha512-V4/dHbQGyYARdPVUn5SDm/Sc4fb4D/P5JhiQIqNx5bi4+iYW0b13YWq2eD4or9mH9FIwCFm0ub+Qhwy7tAdCrQ==
   dependencies:
     chalk "^4.1.2"
     debug "^4.3.2"
 
-"@pooltogether/draw-calculator-js@file:.yalc/@pooltogether/draw-calculator-js":
-  version "1.0.1"
+"@pooltogether/draw-calculator-js@^1.0.0-beta.25":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@pooltogether/draw-calculator-js/-/draw-calculator-js-1.0.2.tgz#9cb16681d03c2eaf2c9935d4b5e333bfc8364b55"
+  integrity sha512-4hRjPPLzRuKQ220VH1gBKSKoij3vze/tPdgrXrha2ZUUPduA5NUVKehTDxIxSgdeXmlDU55yMcKqMaGMpDVxCw==
   dependencies:
     chalk "^4.1.2"
     debug "^4.3.2"

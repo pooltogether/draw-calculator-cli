@@ -1,0 +1,276 @@
+[
+  [
+    {
+      "address": "0x00e6acb9346c6d4940a167f7b196104fa7d84c85",
+      "pick": {
+        "_hex": "0x1686",
+        "_isBigNumber": true
+      },
+      "tier": 5
+    },
+    {
+      "address": "0x00e6acb9346c6d4940a167f7b196104fa7d84c85",
+      "pick": {
+        "_hex": "0x3b1f",
+        "_isBigNumber": true
+      },
+      "tier": 5
+    }
+  ],
+  [],
+  [
+    {
+      "address": "0x09528b6c6fc792eff0c70563c9b4c4c6e38da61d",
+      "pick": {
+        "_hex": "0x3ceb",
+        "_isBigNumber": true
+      },
+      "tier": 3
+    },
+    {
+      "address": "0x09528b6c6fc792eff0c70563c9b4c4c6e38da61d",
+      "pick": {
+        "_hex": "0x5730",
+        "_isBigNumber": true
+      },
+      "tier": 3
+    }
+  ],
+  [],
+  [
+    {
+      "address": "0x27dfa6ba1dd770a675791c528d0346885cee982f",
+      "pick": {
+        "_hex": "0x022f",
+        "_isBigNumber": true
+      },
+      "tier": 5
+    }
+  ],
+  [
+    {
+      "address": "0x501d66e0b4254de6187443b9cdb744e2752f489e",
+      "pick": {
+        "_hex": "0x93",
+        "_isBigNumber": true
+      },
+      "tier": 5
+    }
+  ],
+  [],
+  [],
+  [
+    {
+      "address": "0x5edcf547ece0ea1765d6c02e9e5bae53b52e09d4",
+      "pick": {
+        "_hex": "0x59c7",
+        "_isBigNumber": true
+      },
+      "tier": 3
+    },
+    {
+      "address": "0x5edcf547ece0ea1765d6c02e9e5bae53b52e09d4",
+      "pick": {
+        "_hex": "0x01cdcc",
+        "_isBigNumber": true
+      },
+      "tier": 3
+    }
+  ],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [
+    {
+      "address": "0x94367c03f36cf21263823613fe8011e50a5cdd3a",
+      "pick": {
+        "_hex": "0x8a",
+        "_isBigNumber": true
+      },
+      "tier": 5
+    }
+  ],
+  [
+    {
+      "address": "0x9515cdd94c322c83155fe00467c077f929cf9fb3",
+      "pick": {
+        "_hex": "0x4339",
+        "_isBigNumber": true
+      },
+      "tier": 5
+    },
+    {
+      "address": "0x9515cdd94c322c83155fe00467c077f929cf9fb3",
+      "pick": {
+        "_hex": "0x461e",
+        "_isBigNumber": true
+      },
+      "tier": 5
+    }
+  ],
+  [
+    {
+      "address": "0x961d63f796aa1fb2218fa8b5d9c06d3354773ccd",
+      "pick": {
+        "_hex": "0x144a",
+        "_isBigNumber": true
+      },
+      "tier": 5
+    },
+    {
+      "address": "0x961d63f796aa1fb2218fa8b5d9c06d3354773ccd",
+      "pick": {
+        "_hex": "0x1709",
+        "_isBigNumber": true
+      },
+      "tier": 5
+    }
+  ],
+  [],
+  [
+    {
+      "address": "0xa14ac1a9b3d52abd0652c5aca346099a6eb16b54",
+      "pick": {
+        "_hex": "0x174e",
+        "_isBigNumber": true
+      },
+      "tier": 5
+    }
+  ],
+  [
+    {
+      "address": "0xa57d294c3a11fb542d524062ae4c5100e0e373ec",
+      "pick": {
+        "_hex": "0x12",
+        "_isBigNumber": true
+      },
+      "tier": 5
+    }
+  ],
+  [
+    {
+      "address": "0xab5a193a11f779fe105e8edf9815a0b514b013ca",
+      "pick": {
+        "_hex": "0x2b70",
+        "_isBigNumber": true
+      },
+      "tier": 3
+    },
+    {
+      "address": "0xab5a193a11f779fe105e8edf9815a0b514b013ca",
+      "pick": {
+        "_hex": "0x02b8",
+        "_isBigNumber": true
+      },
+      "tier": 5
+    }
+  ],
+  [
+    {
+      "address": "0xb7b9be0a20e31c0b1b973b78993569db9ef09906",
+      "pick": {
+        "_hex": "0x01810e",
+        "_isBigNumber": true
+      },
+      "tier": 3
+    },
+    {
+      "address": "0xb7b9be0a20e31c0b1b973b78993569db9ef09906",
+      "pick": {
+        "_hex": "0x02b2",
+        "_isBigNumber": true
+      },
+      "tier": 5
+    }
+  ],
+  [
+    {
+      "address": "0xb89f354fc48c1edc490c9ef06f243caca727065f",
+      "pick": {
+        "_hex": "0x3b",
+        "_isBigNumber": true
+      },
+      "tier": 5
+    }
+  ],
+  [],
+  [],
+  [],
+  [],
+  [
+    {
+      "address": "0xd18236cd213f39d078177b6f6908f0e44e88e4aa",
+      "pick": {
+        "_hex": "0x0685",
+        "_isBigNumber": true
+      },
+      "tier": 5
+    },
+    {
+      "address": "0xd18236cd213f39d078177b6f6908f0e44e88e4aa",
+      "pick": {
+        "_hex": "0x0983",
+        "_isBigNumber": true
+      },
+      "tier": 5
+    }
+  ],
+  [],
+  [
+    {
+      "address": "0xd442deb96b90e3b3135653705c3ef1feefb346be",
+      "pick": {
+        "_hex": "0x1bf4",
+        "_isBigNumber": true
+      },
+      "tier": 3
+    },
+    {
+      "address": "0xd442deb96b90e3b3135653705c3ef1feefb346be",
+      "pick": {
+        "_hex": "0x06bf",
+        "_isBigNumber": true
+      },
+      "tier": 5
+    }
+  ],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [
+    {
+      "address": "0xf7b34b89b2261e31fc0ad6ab6210adc51b6fc9b6",
+      "pick": {
+        "_hex": "0x0bda",
+        "_isBigNumber": true
+      },
+      "tier": 5
+    }
+  ],
+  [
+    {
+      "address": "0xf89bb80788a728688015765c8f4b75f96a87a5b3",
+      "pick": {
+        "_hex": "0x0e03",
+        "_isBigNumber": true
+      },
+      "tier": 5
+    },
+    {
+      "address": "0xf89bb80788a728688015765c8f4b75f96a87a5b3",
+      "pick": {
+        "_hex": "0x1576",
+        "_isBigNumber": true
+      },
+      "tier": 5
+    }
+  ]
+]

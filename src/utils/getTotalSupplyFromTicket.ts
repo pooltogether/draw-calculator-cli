@@ -7,10 +7,10 @@ export async function getTotalSupplyFromTicket(
     drawStartTime: number,
     drawEndTime: number,
     provider: Provider
-): Promise<BigNumber> {
+): Promise<BigNumber[]> {
     const ticketContract = new Contract(ticketAddress, TicketAbi, provider);
 
-    const totalSupplies = await ticketContract.getAverageTotalSuppliesBetween(
+    const totalSupplies: BigNumber[] = await ticketContract.getAverageTotalSuppliesBetween(
         [drawStartTime],
         [drawEndTime]
     );

@@ -12,46 +12,43 @@ export async function runCalculateDrawResultsWorker(
     draw: Draw
 ): Promise<any> {
     const piscina = new Piscina({
-        filename: resolve(__dirname, "../workers/calculatePrizeForUser.js"),
+        filename: resolve(__dirname, "../src/workers/calculatePrizeForUser.js"),
     });
 
-    const prizes = normalizedUserBalances.map(async (userBalance: NormalizedUserBalance) => {
-        console.log(
-            `creating thread for ${
-                userBalance.address
-            }... with balance ${userBalance.normalizedBalance.toString()}`
-        );
+    const prizes = await Promise.all(
+        normalizedUserBalances.map(async (userBalance: NormalizedUserBalance) => {
+            debug(
+                `creating thread for ${
+                    userBalance.address
+                }... with balance ${userBalance.normalizedBalance.toString()}`
+            );
 
-        const user = {
-            address: userBalance.address,
-            balance: userBalance.normalizedBalance.toString(),
-        };
+            // serialize the data as strings
+            const user = {
+                address: userBalance.address,
+                balance: userBalance.normalizedBalance.toString(),
+            };
+            const _prizeDistribution = {
+                ...prizeDistribution,
+                numberOfPicks: prizeDistribution.numberOfPicks.toString(),
+                bitRangeSize: prizeDistribution.bitRangeSize,
+                prize: prizeDistribution.prize.toString(),
+            };
+            const _draw = {
+                ...draw,
+                winningRandomNumber: draw.winningRandomNumber.toString(),
+            };
+            const workerArgs = {
+                user,
+                prizeDistribution: _prizeDistribution,
+                draw: _draw,
+            };
 
-        // console.log(`prizeDistribution.numberOfPicks ${prizeDistribution.numberOfPicks}`);
-
-        const _prizeDistribution = {
-            ...prizeDistribution,
-            numberOfPicks: prizeDistribution.numberOfPicks.toString(),
-            bitRangeSize: prizeDistribution.bitRangeSize,
-            prize: prizeDistribution.prize.toString(),
-        };
-        // const _prizeDistribution = prizeDistribution;
-
-        const _draw = {
-            ...draw,
-            winningRandomNumber: draw.winningRandomNumber.toString(),
-        };
-
-        const workerArgs = {
-            user,
-            prizeDistribution: _prizeDistribution,
-            draw: _draw,
-        };
-        debug("calling piscina with ", workerArgs);
-
-        const result = await piscina.run(workerArgs);
-        debug(`result from worker thread: ${result}`);
-        return result;
-    });
+            const result = await piscina.run(workerArgs);
+            debug(`result from worker thread: ${JSON.stringify(result)}`);
+            return result;
+        })
+    );
+    debug(`runCalculateDrawResultsWorker returning ${prizes.length} results..`);
     return prizes;
 }

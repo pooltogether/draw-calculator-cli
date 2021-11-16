@@ -2,5 +2,7 @@ import { BigNumber } from 'ethers';
 import { calculateNormalizedBalance } from '../src/utils/calculateNormalizedBalance';
 
 describe('calculateNormalizedBalance()', () => {
-    it('returns sane result', () => {});
+    it('', () => {
+        const drawTotalTicketSupply = 1476940602403;
+    });
 });

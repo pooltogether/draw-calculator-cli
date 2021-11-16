@@ -5,7 +5,8 @@ export async function getUserAccountsFromSubgraphForTicket(
     network: string,
     ticket: string,
     drawStartTime: number,
-    drawEndTime: number
+    drawEndTime: number,
+    userAddress: string = ""
 ): Promise<any[]> {
     const subgraphURL = getSubgraphUrlForNetwork(network);
 
@@ -15,6 +16,8 @@ export async function getUserAccountsFromSubgraphForTicket(
     // now call subgraph
     let dynamicAccountQueryResults: any = [];
     // while the number of results returned is less than maxPageSize, make query
+    // let accountFilterString = userAddress = "" ?
+
     while (true) {
         const dynamicAccountsQueryString = `{
         ticket(id: ${_ticket}) {
@@ -22,7 +25,7 @@ export async function getUserAccountsFromSubgraphForTicket(
                 id
                 delegateBalance
                 zeroBalanceOccurredAt
-                lastUpdatedTimestamp
+                
                 twabs(
                     orderBy: timestamp
                     orderDirection: desc
@@ -69,7 +72,7 @@ export async function getUserAccountsFromSubgraphForTicket(
                     id
                     delegateBalance
                     zeroBalanceOccurredAt
-                    lastUpdatedTimestamp
+
                     # get twab beforeOrAt drawStartTime
                     beforeOrAtDrawStartTime: twabs(
                         orderBy: timestamp
