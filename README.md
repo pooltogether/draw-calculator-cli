@@ -1,103 +1,63 @@
-# TSDX User Guide
+# Draw Calculator CLI
 
-Congrats! You just saved yourself hours of work by bootstrapping this project with TSDX. Let’s get you oriented with what’s here and how to use it.
+[![CI](https://github.com/pooltogether/draw-calculator-cli/actions/workflows/main.yml/badge.svg)](https://github.com/pooltogether/draw-calculator-cli/actions/workflows/main.yml)
 
-> This TSDX setup is meant for developing libraries (not apps!) that can be published to NPM. If you’re looking to build a Node app, you could use `ts-node-dev`, plain `ts-node`, or simple `tsc`.
+A NodeJs CLI tool for calculating prizes for PoolTogether v4.
 
-> If you’re new to TypeScript, checkout [this handy cheatsheet](https://devhints.io/typescript)
+## Description
 
-## Commands
+This CLI uses the [TWAB subgraphs](https://github.com/pooltogether/twab-subgraph) across networks to calculate TWABS for a given drawId, ticket and network (specified as CLI input args).
 
-TSDX scaffolds your new library inside `/src`.
-
-To run TSDX, use:
-
-```bash
-npm start # or yarn start
-```
-
-This builds to `/dist` and runs the project in watch mode so any edits you save inside `src` causes a rebuild to `/dist`.
-
-To do a one-off build, use `npm run build` or `yarn build`.
-
-To run tests, use `npm test` or `yarn test`.
-
-## Configuration
-
-Code quality is set up for you with `prettier`, `husky`, and `lint-staged`. Adjust the respective fields in `package.json` accordingly.
-
-### Jest
-
-Jest tests are set up to run with `npm test` or `yarn test`.
-
-### Bundle Analysis
-
-[`size-limit`](https://github.com/ai/size-limit) is set up to calculate the real cost of your library with `npm run size` and visualize the bundle with `npm run analyze`.
-
-#### Setup Files
-
-This is the folder structure we set up for you:
-
-```txt
-/src
-  index.tsx       # EDIT THIS
-/test
-  blah.test.tsx   # EDIT THIS
-.gitignore
-package.json
-README.md         # EDIT THIS
-tsconfig.json
-```
-
-### Rollup
-
-TSDX uses [Rollup](https://rollupjs.org) as a bundler and generates multiple rollup configs for various module formats and build settings. See [Optimizations](#optimizations) for details.
-
-### TypeScript
-
-`tsconfig.json` is set up to interpret `dom` and `esnext` types, as well as `react` for `jsx`. Adjust according to your needs.
-
-## Continuous Integration
-
-### GitHub Actions
-
-Two actions are added by default:
-
-- `main` which installs deps w/ cache, lints, tests, and builds on all pushes against a Node and OS matrix
-- `size` which comments cost comparison of your library on every pull request using [`size-limit`](https://github.com/ai/size-limit)
-
-## Optimizations
-
-Please see the main `tsdx` [optimizations docs](https://github.com/palmerhq/tsdx#optimizations). In particular, know that you can take advantage of development-only optimizations:
+Then creates a thread for each address (using Piscina) to call the [Draw Calculator JS library](https://github.com/pooltogether/draw-calculators-js) and outputs a `prizes.json` file (written to `outputDir` CLI arg) with structure:
 
 ```js
-// ./types/index.d.ts
-declare var __DEV__: boolean;
+ [
+   [
+     {
+        address: "0xa..",
+        amount: "12183712897312",
 
-// inside your code...
-if (__DEV__) {
-  console.log('foo');
-}
+     },
+     ...
+   ],
+   [
+      {
+        address: "0xb..",
+        amount: "223132132",
+
+     },
+   ],
+   ...
+ ]
+
 ```
 
-You can also choose to install and use [invariant](https://github.com/palmerhq/tsdx#invariant) and [warning](https://github.com/palmerhq/tsdx#warning) functions.
+### Adding a new network
 
-## Module Formats
+1. Create a new subgraph for that network.
+1. Add the subgraph query endpoint to `src/constants.ts`
+1. Add Ethers Provider RPC URL to the `.env` and lookup logic to `src/utils/getRpcProvider.ts`
 
-CJS, ESModules, and UMD module formats are supported.
+## Usage
 
-The appropriate paths are configured in `package.json` and `dist/index.js` accordingly. Please report if any issues are found.
+1. Install the CLI tool by running `yarn` in this directory.
+1. Add the required env variables listed in `.envrc.example` to `.envrc` and run `direnv allow`.
 
-## Named Exports
+1. The CLI has a number of required args:
 
-Per Palmer Group guidelines, [always use named exports.](https://github.com/palmerhq/typescript#exports) Code split inside your React app instead of your React library.
+```js
+.requiredOption("-n, --network <string>", "select network (mainnet, rinkeby, polygon or binance etc.)")
 
-## Including Styles
+.requiredOption("-t, --ticket <string>", "ticket contract address")
 
-There are many ways to ship styles, including with CSS-in-JS. TSDX has no opinion on this, configure how you like.
+.requiredOption("-d, --drawId <string>", "drawId to perform lookup for")
 
-For vanilla CSS, you can include it at the root directory and add it to the `files` section in your `package.json`, so that it can be imported separately by your users and run through their bundler's loader.
+.requiredOption("-o, --outputDir <string>", "relative path to output resulting JSON blob");`
+```
 
-## Publishing to NPM
+For example:
+`node ./dist/index.js -n mainnet -t 0xdd4d117723C257CEe402285D3aCF218E9A8236E1 -d 8 -o ./results`
+will run the CLI for Mainnet ticket "0xdd4d117723C257CEe402285D3aCF218E9A8236E1" for drawId 8, and output the resulting JSON files in ./results directory.
 
-We recommend using [np](https://github.com/sindresorhus/np).
+`node ./dist/index.js -n polygon -t 0x6a304dFdb9f808741244b6bfEe65ca7B3b3A6076 -d 32 -o ./results`
+will run the CLI for Polygon ticket "0xdd4d117723C257CEe402285D3aCF218E9A8236E1" for drawId 32, and output the resulting JSON files in ./results directory.

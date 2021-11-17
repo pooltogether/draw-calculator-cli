@@ -10,6 +10,9 @@
 
 .envrc
 
+.yalc/*
+yalc*
+
 abis
 artifacts
 cache
@@ -41,3 +44,5 @@ Networks.md
 
 # Docs
 docs
+
+results/
