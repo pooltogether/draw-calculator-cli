@@ -15,7 +15,7 @@
         "reinstall": "rm -rf node_modules && rm -rf dist/ && yarn",
         "start": "tsdx watch",
         "build": "tsdx build && cp -rf src/workers/* dist/workers",
-        "test": "tsdx test",
+        "test": "yarn build && tsdx test",
         "lint": "tsdx lint",
         "prepare": "yarn build",
         "size": "size-limit",
@@ -25,10 +25,10 @@
         "@pooltogether/draw-calculator-js": "1.0.3",
         "graphql": "^16.0.1",
         "graphql-request": "^3.6.1",
-        "yalc": "^1.0.0-pre.53"
+        "@pooltogether/v4-mainnet": "^1.0.1"
     },
     "devDependencies": {
-        "@pooltogether/v4-mainnet": "^1.0.1",
+        "yalc": "^1.0.0-pre.53",
         "@types/chai": "^4.2.21",
         "@types/expect": "^24.3.0",
         "@types/mocha": "^9.0.0",

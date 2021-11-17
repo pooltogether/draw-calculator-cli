@@ -92,7 +92,7 @@ async function main() {
     const filteredUserBalances: UserBalance[] = filterUndef<UserBalance>(userBalances);
     debug("filteredUserBalances length ", filteredUserBalances.length);
 
-    // normalize
+    // normalize - getAverageTotalSuppliesFromTicket and normalize (div) with this value
     const ticketTotalSupplies: BigNumber[] = await getAverageTotalSuppliesFromTicket(
         ticket,
         drawStartTimestamp,
@@ -108,7 +108,7 @@ async function main() {
 
     // run worker for each userBalance
     debug(`running draw calculator workers..`);
-    const prizes: Prize[] = await runCalculateDrawResultsWorker(
+    const prizes: Prize[][] = await runCalculateDrawResultsWorker(
         normalizedUserBalances,
         prizeDistribution,
         draw

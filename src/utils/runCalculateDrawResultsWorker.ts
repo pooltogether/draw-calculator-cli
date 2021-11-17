@@ -12,6 +12,9 @@ export async function runCalculateDrawResultsWorker(
     prizeDistribution: PrizeDistribution,
     draw: Draw
 ): Promise<Prize[][]> {
+    console.log("_dirname ", __dirname);
+    console.log(resolve(__dirname, "../src/workers/calculatePrizeForUser.js"));
+
     const piscina = new Piscina({
         filename: resolve(__dirname, "../src/workers/calculatePrizeForUser.js"),
     });
