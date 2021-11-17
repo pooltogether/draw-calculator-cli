@@ -7,9 +7,11 @@ export function validateInputs(
     outputDir: string
 ) {
     // parse address
-    utils.getAddress(address); // this will throw if not a correctly formatted address
-
-    // check network can give network id
+    try {
+        utils.getAddress(address); // this will throw if not a correctly formatted address
+    } catch (e) {
+        throw new Error("Invalid address");
+    }
 
     // check output directory makes sense
 }

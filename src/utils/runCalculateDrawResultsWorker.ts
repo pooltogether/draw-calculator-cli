@@ -11,7 +11,7 @@ export async function runCalculateDrawResultsWorker(
     normalizedUserBalances: NormalizedUserBalance[],
     prizeDistribution: PrizeDistribution,
     draw: Draw
-): Promise<Prize[]> {
+): Promise<Prize[][]> {
     const piscina = new Piscina({
         filename: resolve(__dirname, "../src/workers/calculatePrizeForUser.js"),
     });
@@ -48,7 +48,7 @@ export async function runCalculateDrawResultsWorker(
             return await piscina.run(workerArgs);
         })
     );
-    const filteredPrizes: Prize[] = filterUndef<Prize>(prizes);
+    const filteredPrizes: Prize[][] = filterUndef<Prize[]>(prizes);
     debug(`runCalculateDrawResultsWorker returning ${prizes.length} results..`);
     return filteredPrizes;
 }

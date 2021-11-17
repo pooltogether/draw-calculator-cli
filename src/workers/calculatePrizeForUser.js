@@ -32,9 +32,9 @@ module.exports = function calculatePrizeForUser({ user, prizeDistribution, draw 
     const prizes = prizesAwardable.map((prize) => {
         return {
             address: user.address,
-            pick: prize.pick,
+            pick: prize.pick.toString(),
             tier: prize.distributionIndex,
-            amount: prize.amount,
+            amount: prize.amount.toString(),
         };
     });
 

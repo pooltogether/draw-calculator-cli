@@ -9,12 +9,13 @@ import { getUserAccountsFromSubgraphForTicket } from "./utils/getUserAccountsFro
 import { validateInputs } from "./utils/validateInputs";
 import { Account, NormalizedUserBalance, Prize, UserBalance } from "./types";
 import { filterUndef } from "./utils/filterUndefinedValues";
-import { writeFileSync } from "fs";
 import { BigNumber } from "ethers";
 import { calculateUserBalanceFromAccount } from "./utils/calculateUserBalanceFromAccount";
 import { normalizeUserBalances } from "./utils/normalizeUserBalances";
 import { runCalculateDrawResultsWorker } from "./utils/runCalculateDrawResultsWorker";
 import { PrizeDistribution, Draw } from "@pooltogether/draw-calculator-js";
+import { writeToOutput } from "./utils/writeToOutput";
+import { parseAndWriteAddressesToOutput } from "./utils/parseAndWriteAddressesToOutput";
 
 const debug = require("debug")("pt:draw-calculator-cli");
 
@@ -114,9 +115,9 @@ async function main() {
     );
     debug(`draw calc workers returned: ${prizes.length} prizes`);
 
-    // now write to outputDir as JSON blob
-    const outputFilePath = `${outputDir}/draw${draw.drawId}.json`;
-    writeFileSync(outputFilePath, JSON.stringify(prizes, null, 2));
+    // now write prizes to outputDir as JSON blob
+    writeToOutput(outputDir, network, draw.drawId.toString(), "prizes", prizes);
+    parseAndWriteAddressesToOutput(outputDir, network, draw.drawId.toString(), prizes);
 
     debug(`exiting program`); // exit with zero status - does commander do this?
 }

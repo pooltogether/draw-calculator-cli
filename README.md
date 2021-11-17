@@ -2,15 +2,35 @@
 
 [![CI](https://github.com/pooltogether/draw-calculator-cli/actions/workflows/main.yml/badge.svg)](https://github.com/pooltogether/draw-calculator-cli/actions/workflows/main.yml)
 
-A CLI tool for all things Draw Calculator!
-
-See (here)[https://www.notion.so/ptinc/CLI-Lib-to-calculate-prizes-01ae87125fab460b907a35efc3496ca8]
+A NodeJs CLI tool for calculating prizes for PoolTogether v4.
 
 ## Description
 
-Uses the [TWAB subgraphs](https://github.com/pooltogether/twab-subgraph) across networks to calculate
+This CLI uses the [TWAB subgraphs](https://github.com/pooltogether/twab-subgraph) across networks to calculate TWABS for a given drawId, ticket and network (specified as CLI input args).
 
-Then creates a thread for each address (using Piscina) to call the [Draw Calculator JS library](https://github.com/pooltogether/draw-calculators-js).
+Then creates a thread for each address (using Piscina) to call the [Draw Calculator JS library](https://github.com/pooltogether/draw-calculators-js) and outputs a `prizes.json` file (written to `outputDir` CLI arg) with structure:
+
+```js
+ [
+   [
+     {
+        address: "0xa..",
+        amount: "12183712897312",
+
+     },
+     ...
+   ],
+   [
+      {
+        address: "0xb..",
+        amount: "223132132",
+
+     },
+   ],
+   ...
+ ]
+
+```
 
 ### Adding a new network
 
@@ -20,7 +40,10 @@ Then creates a thread for each address (using Piscina) to call the [Draw Calcula
 
 ## Usage
 
-The CLI has a number of required args:
+1. Install the CLI tool by running `yarn` in this directory.
+1. Add the required env variables listed in `.envrc.example` to `.envrc` and run `direnv allow`.
+
+1. The CLI has a number of required args:
 
 ```js
 .requiredOption("-n, --network <string>", "select network (mainnet, rinkeby, polygon or binance etc.)")
@@ -33,8 +56,8 @@ The CLI has a number of required args:
 ```
 
 For example:
-`node ./dist/index.js -n mainnet -t 0xdd4d117723C257CEe402285D3aCF218E9A8236E1 -d 8 -o ./`
-will run the CLI for Mainnet ticket "0xdd4d117723C257CEe402285D3aCF218E9A8236E1" for drawId 8, and output the resulting JSON file in the directory this command is run.
+`node ./dist/index.js -n mainnet -t 0xdd4d117723C257CEe402285D3aCF218E9A8236E1 -d 8 -o ./results`
+will run the CLI for Mainnet ticket "0xdd4d117723C257CEe402285D3aCF218E9A8236E1" for drawId 8, and output the resulting JSON files in ./results directory.
 
-`node ./dist/index.js -n polygon -t 0x6a304dFdb9f808741244b6bfEe65ca7B3b3A6076 -d 32 -o ./`
-will run the CLI for Polygon ticket "0xdd4d117723C257CEe402285D3aCF218E9A8236E1" for drawId 32, and output the resulting JSON file in the directory this command is run.
+`node ./dist/index.js -n polygon -t 0x6a304dFdb9f808741244b6bfEe65ca7B3b3A6076 -d 32 -o ./results`
+will run the CLI for Polygon ticket "0xdd4d117723C257CEe402285D3aCF218E9A8236E1" for drawId 32, and output the resulting JSON files in ./results directory.
