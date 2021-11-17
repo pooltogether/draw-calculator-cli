@@ -1,5 +1,5 @@
 import { BigNumber } from 'ethers';
-import { Draw } from '../src';
+import { Draw } from '@pooltogether/draw-calculator-js';
 import { runCalculateDrawResultsWorker } from '../src/utils/runCalculateDrawResultsWorker';
 
 describe('runCalculateDrawResultsWorker', () => {

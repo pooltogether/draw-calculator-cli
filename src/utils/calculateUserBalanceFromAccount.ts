@@ -1,13 +1,12 @@
 import { BigNumber } from "ethers";
-import { UserBalance } from "../types";
+const debug = require("debug")("pt:draw-calculator-cli");
 
 export function calculateUserBalanceFromAccount(
     accountEntry: any,
     drawStartTime: number,
     drawEndTime: number
 ): BigNumber | undefined {
-    // console.log(`\n enter function for user ${accountEntry.id}\n`);
-    console.log("calculating twabEntry from ", JSON.stringify(accountEntry));
+    debug("calculating twabEntry from ", JSON.stringify(accountEntry));
 
     // beforeOrAtDrawStartTime: S
     // beforeOrAtDrawEndTime: E
@@ -21,7 +20,6 @@ export function calculateUserBalanceFromAccount(
     const eTwab = accountEntry.beforeOrAtDrawEndTime[0];
 
     if (!sTwab && !eTwab) {
-        console.log("no twab");
         return undefined;
     }
 

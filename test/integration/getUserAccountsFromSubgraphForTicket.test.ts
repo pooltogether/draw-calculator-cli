@@ -15,7 +15,6 @@ describe('call the graph endpoint', () => {
         );
         subgraphResult.some((account: any) => {
             if (account.id == '0x636bae3f76b4ccb486f50bf192ea2a8d22d1a79a') {
-                // console.log(account);
                 return true;
             }
             return false;

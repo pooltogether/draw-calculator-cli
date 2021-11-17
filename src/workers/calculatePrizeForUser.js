@@ -17,18 +17,15 @@ module.exports = function calculatePrizeForUser({ user, prizeDistribution, draw 
     // calls calculateDrawResults js lib
     let results;
     try {
-        console.log(
-            `calculateDrawResults for ${_user.address} with balance: ${_user.normalizedBalances[0]}`
-        );
         results = drawCalculatorLib.calculateDrawResults(prizeDistribution, _draw, _user); // all sync
     } catch (error) {
         debug("error calling draw calc: ", error);
         return;
     }
 
-    // if (results.prizes.length === 0) {
-    //     return undefined;
-    // }
+    if (results.prizes.length === 0) {
+        return undefined;
+    }
 
     const prizesAwardable = results.prizes;
 
@@ -37,6 +34,7 @@ module.exports = function calculatePrizeForUser({ user, prizeDistribution, draw 
             address: user.address,
             pick: prize.pick,
             tier: prize.distributionIndex,
+            amount: prize.amount,
         };
     });
 

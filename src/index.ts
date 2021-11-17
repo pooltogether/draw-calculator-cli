@@ -4,40 +4,19 @@ import { getDrawFromDrawId } from "./utils/getDrawFromDrawId";
 import { getPrizeDistribution } from "./utils/getPrizeDistribution";
 import { getPrizeDistributionBufferAddress } from "./utils/getPrizeDistributionAddress";
 import { getRpcProvider } from "./utils/getRpcProvider";
-import { getTotalSupplyFromTicket } from "./utils/getTotalSupplyFromTicket";
+import { getAverageTotalSuppliesFromTicket } from "./utils/getAverageTotalSuppliesFromTicket";
 import { getUserAccountsFromSubgraphForTicket } from "./utils/getUserAccountsFromSubgraphForTicket";
 import { validateInputs } from "./utils/validateInputs";
-import { NormalizedUserBalance, UserBalance } from "./types";
+import { Account, NormalizedUserBalance, Prize, UserBalance } from "./types";
 import { filterUndef } from "./utils/filterUndefinedValues";
 import { writeFileSync } from "fs";
-
 import { BigNumber } from "ethers";
 import { calculateUserBalanceFromAccount } from "./utils/calculateUserBalanceFromAccount";
 import { normalizeUserBalances } from "./utils/normalizeUserBalances";
 import { runCalculateDrawResultsWorker } from "./utils/runCalculateDrawResultsWorker";
-import { User } from "@pooltogether/draw-calculator-js";
+import { PrizeDistribution, Draw } from "@pooltogether/draw-calculator-js";
 
 const debug = require("debug")("pt:draw-calculator-cli");
-
-export type Draw = {
-    drawId: number;
-    winningRandomNumber: BigNumber;
-    timestamp: number;
-    beaconPeriodStartedAt?: number;
-    beaconPeriodSeconds?: number;
-};
-
-export type PrizeDistribution = {
-    matchCardinality: number;
-    numberOfPicks: BigNumber;
-    tiers: number[];
-    bitRangeSize: number;
-    prize: BigNumber;
-    startTimestampOffset: number;
-    endTimestampOffset: number;
-    maxPicksPerUser: number;
-    expiryDuration: number;
-};
 
 async function main() {
     debug(`Running Draw Calculator CLI tool..`);
@@ -51,25 +30,17 @@ async function main() {
         .requiredOption("-t, --ticket <string>", "ticket contract address")
 
         .requiredOption("-d, --drawId <string>", "drawId to perform lookup for")
-        .requiredOption("-o, --outputDir <string>", "relative path to output resulting JSON blob")
-        .option("-u --user <string>", "user address to filter");
+        .requiredOption("-o, --outputDir <string>", "relative path to output resulting JSON blob");
     program.parse(process.argv);
     const options = program.opts();
     const network = options.network;
     const ticket = options.ticket;
     const drawId = options.drawId;
     const outputDir = options.outputDir;
-    const userAddress = options.user;
-
-    debug(`was passed ${network} for network`);
-    debug(`was passed ${ticket} for ticket`);
-    debug(`was passed ${drawId} for drawId`);
-    debug(`was passed ${outputDir} for outputDir`);
-    debug(`was passed ${userAddress} for userAddress`);
 
     // validate inputs
     validateInputs(network, ticket, drawId, outputDir);
-    const provider = getRpcProvider();
+    const provider = getRpcProvider(network);
 
     // lookup draw buffer address for network
     const drawBufferAddress = getDrawBufferAddress(network);
@@ -82,33 +53,25 @@ async function main() {
         drawId,
         provider
     );
-    debug("got prizeDistribution: ", JSON.stringify(prizeDistribution));
-    debug(`prizeDistribution.numberOfPicks `, prizeDistribution.numberOfPicks);
-
     // get draw timestamp using drawId
     const draw: Draw = await getDrawFromDrawId(drawId, drawBufferAddress, provider);
+    const drawTimestamp = (draw as any).timestamp;
+    const drawStartTimestamp = drawTimestamp - (prizeDistribution as any).startTimestampOffset;
+    const drawEndTimestamp = drawTimestamp - (prizeDistribution as any).endTimestampOffset;
 
-    debug(`draw: ${JSON.stringify(draw)}`);
-    debug(`draw.timestamp: ${draw.timestamp}`);
-
-    const drawTimestamp = draw.timestamp;
-    const drawStartTimestamp = drawTimestamp - prizeDistribution.startTimestampOffset;
-    const drawEndTimestamp = drawTimestamp - prizeDistribution.endTimestampOffset;
-
-    console.log("drawStartTimestamp: ", drawStartTimestamp);
-    console.log("drawEndTimestamp: ", drawEndTimestamp);
+    // for testing remove
+    debug("drawStartTimestamp: ", drawStartTimestamp);
+    debug("drawEndTimestamp: ", drawEndTimestamp);
 
     // get accounts from subgraph for ticket and network
-
-    const userAccounts = await getUserAccountsFromSubgraphForTicket(
+    const userAccounts: Account[] = await getUserAccountsFromSubgraphForTicket(
         network,
         ticket,
         drawStartTimestamp,
-        drawEndTimestamp,
-        userAddress
+        drawEndTimestamp
     );
     // calculate user balances from twabs
-    const userBalances: any[] = userAccounts.map((account: any) => {
+    const userBalances: any[] = userAccounts.map((account: Account) => {
         const balance = calculateUserBalanceFromAccount(
             account,
             drawStartTimestamp,
@@ -118,7 +81,7 @@ async function main() {
             return undefined;
         }
         return {
-            balance: calculateUserBalanceFromAccount(account, drawStartTimestamp, drawEndTimestamp),
+            balance,
             address: account.id,
         };
     });
@@ -129,32 +92,32 @@ async function main() {
     debug("filteredUserBalances length ", filteredUserBalances.length);
 
     // normalize
-    const ticketTotalSupply = await getTotalSupplyFromTicket(
+    const ticketTotalSupplies: BigNumber[] = await getAverageTotalSuppliesFromTicket(
         ticket,
         drawStartTimestamp,
         drawEndTimestamp,
         provider
     );
-    debug(`got total ticket supply ${ticketTotalSupply}`);
+    debug(`got total ticket supply ${ticketTotalSupplies[0]}`);
     debug(`normalizing balances..`);
-    const normalizedUserBalances = normalizeUserBalances(
+    const normalizedUserBalances: NormalizedUserBalance[] = normalizeUserBalances(
         filteredUserBalances,
-        ticketTotalSupply[0]
+        ticketTotalSupplies[0]
     );
 
     // run worker for each userBalance
     debug(`running draw calculator workers..`);
-    const prizes = await runCalculateDrawResultsWorker(
+    const prizes: Prize[] = await runCalculateDrawResultsWorker(
         normalizedUserBalances,
         prizeDistribution,
         draw
     );
     debug(`draw calc workers returned: ${prizes.length} prizes`);
-    console.log(prizes);
+
     // now write to outputDir as JSON blob
     const outputFilePath = `${outputDir}/draw${draw.drawId}.json`;
     writeFileSync(outputFilePath, JSON.stringify(prizes, null, 2));
 
-    debug(`exiting program`); // exit with zero status - can commander do this?
+    debug(`exiting program`); // exit with zero status - does commander do this?
 }
 main();

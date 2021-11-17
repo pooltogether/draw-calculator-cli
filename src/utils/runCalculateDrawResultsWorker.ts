@@ -1,8 +1,9 @@
 import { BigNumber } from "ethers";
 import Piscina from "piscina";
-import { Draw, PrizeDistribution } from "..";
-import { NormalizedUserBalance } from "../types";
+import { Draw, PrizeDistribution } from "@pooltogether/draw-calculator-js";
+import { NormalizedUserBalance, Prize } from "../types";
 import { resolve } from "path";
+import { filterUndef } from "./filterUndefinedValues";
 
 const debug = require("debug")("pt:draw-calculator-cli");
 
@@ -10,7 +11,7 @@ export async function runCalculateDrawResultsWorker(
     normalizedUserBalances: NormalizedUserBalance[],
     prizeDistribution: PrizeDistribution,
     draw: Draw
-): Promise<any> {
+): Promise<Prize[]> {
     const piscina = new Piscina({
         filename: resolve(__dirname, "../src/workers/calculatePrizeForUser.js"),
     });
@@ -44,11 +45,10 @@ export async function runCalculateDrawResultsWorker(
                 draw: _draw,
             };
 
-            const result = await piscina.run(workerArgs);
-            debug(`result from worker thread: ${JSON.stringify(result)}`);
-            return result;
+            return await piscina.run(workerArgs);
         })
     );
+    const filteredPrizes: Prize[] = filterUndef<Prize>(prizes);
     debug(`runCalculateDrawResultsWorker returning ${prizes.length} results..`);
-    return prizes;
+    return filteredPrizes;
 }

@@ -1,13 +1,15 @@
 import { getSubgraphUrlForNetwork } from "./getSubgraphUrlForNetwork";
 import { request, gql } from "graphql-request";
+import { Account } from "../types";
+
+const debug = require("debug")("pt:draw-calculator-cli");
 
 export async function getUserAccountsFromSubgraphForTicket(
     network: string,
     ticket: string,
     drawStartTime: number,
-    drawEndTime: number,
-    userAddress: string = ""
-): Promise<any[]> {
+    drawEndTime: number
+): Promise<Account[]> {
     const subgraphURL = getSubgraphUrlForNetwork(network);
 
     let offset = 0;
@@ -16,8 +18,6 @@ export async function getUserAccountsFromSubgraphForTicket(
     // now call subgraph
     let dynamicAccountQueryResults: any = [];
     // while the number of results returned is less than maxPageSize, make query
-    // let accountFilterString = userAddress = "" ?
-
     while (true) {
         const dynamicAccountsQueryString = `{
         ticket(id: ${_ticket}) {
@@ -39,15 +39,13 @@ export async function getUserAccountsFromSubgraphForTicket(
             }
         }
     }`;
-        console.log(`\n query string ${dynamicAccountsQueryString} \n`);
+        debug(`\n query string ${dynamicAccountsQueryString} \n`);
         let query = gql`
             ${dynamicAccountsQueryString}
         `;
         let response;
         try {
             response = await request(subgraphURL, query);
-            console.log(`Got response with lenght ${response.ticket.accounts.length}`);
-
             dynamicAccountQueryResults.push(response.ticket.accounts);
 
             const numberOfResults = response.ticket.accounts.length;
@@ -58,7 +56,7 @@ export async function getUserAccountsFromSubgraphForTicket(
             // else increment offset and make another query
             offset += maxPageSize;
         } catch (e) {
-            console.log(e);
+            debug(`error calling subgraph ${e}`);
         }
     }
 
@@ -98,16 +96,13 @@ export async function getUserAccountsFromSubgraphForTicket(
                 }
             }
         }`;
-        console.log(`\n query string ${staticAccountsQueryString} \n`);
+        debug(`\n query string ${staticAccountsQueryString} \n`);
         let query = gql`
             ${staticAccountsQueryString}
         `;
-        console.log(`\n making query ${staticAccountsQueryString} \n`);
         let response;
         try {
             response = await request(subgraphURL, query);
-            console.log(`Got response with lenght ${response.ticket.accounts.length}`);
-
             staticAccountQueryResults.push(response.ticket.accounts);
 
             const numberOfResults = response.ticket.accounts.length;
@@ -118,10 +113,10 @@ export async function getUserAccountsFromSubgraphForTicket(
             // else increment offset and make another query
             offset += maxPageSize;
         } catch (e) {
-            console.log(e);
+            debug(`error calling subgraph ${e}`);
             break;
         }
     }
     let allUserBalances: any[] = staticAccountQueryResults.concat(dynamicAccountQueryResults);
-    return allUserBalances[0];
+    return allUserBalances[0] as Account[];
 }

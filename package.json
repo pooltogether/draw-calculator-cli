@@ -11,13 +11,13 @@
         "node": ">=10"
     },
     "scripts": {
-        "clean": "rm -rf node_modules && rm -rf dist/",
+        "clean": "rm -rf dist/",
         "reinstall": "rm -rf node_modules && rm -rf dist/ && yarn",
         "start": "tsdx watch",
-        "build": "tsdx build",
+        "build": "tsdx build && cp -rf src/workers/* dist/workers",
         "test": "tsdx test",
         "lint": "tsdx lint",
-        "prepare": "tsdx build",
+        "prepare": "yarn build",
         "size": "size-limit",
         "analyze": "size-limit --why"
     },
