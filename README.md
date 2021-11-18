@@ -1,3 +1,11 @@
+<p align="center">
+  <a href="https://github.com/pooltogether/pooltogether--brand-assets">
+    <img src="https://github.com/pooltogether/pooltogether--brand-assets/blob/977e03604c49c63314450b5d432fe57d34747c66/logo/pooltogether-logo--purple-gradient.png?raw=true" alt="PoolTogether Brand" style="max-width:100%;" width="200">
+  </a>
+</p>
+
+<br />
+
 # Draw Calculator CLI
 
 [![CI](https://github.com/pooltogether/draw-calculator-cli/actions/workflows/main.yml/badge.svg)](https://github.com/pooltogether/draw-calculator-cli/actions/workflows/main.yml)
@@ -6,9 +14,9 @@ A NodeJs CLI tool for calculating prizes for PoolTogether v4.
 
 ## Description
 
-This CLI uses the [TWAB subgraphs](https://github.com/pooltogether/twab-subgraph) across networks to calculate TWABS for a given drawId, ticket and network (specified as CLI input args).
+This CLI uses the [TWAB subgraphs](https://github.com/pooltogether/twab-subgraph) across networks to calculate TWABS for a given `drawId`, `ticket` and `network` (specified as CLI input args).
 
-Then creates a thread for each address (using Piscina) to call the [Draw Calculator JS library](https://github.com/pooltogether/draw-calculators-js) and outputs a `prizes.json` file (written to `outputDir` CLI arg) with structure:
+Then creates a thread for each address (using [Piscina](https://www.npmjs.com/package/piscina)) to call the [Draw Calculator JS library](https://github.com/pooltogether/draw-calculators-js) and outputs a `prizes.json` file (written to `outputDir` CLI arg) with structure:
 
 ```js
  [
@@ -31,6 +39,8 @@ Then creates a thread for each address (using Piscina) to call the [Draw Calcula
  ]
 
 ```
+
+alongside a per address json of similar structure for each winning address.
 
 ### Adding a new network
 

@@ -21,6 +21,7 @@ const debug = require("debug")("pt:draw-calculator-cli");
 
 async function main() {
     debug(`Running Draw Calculator CLI tool..`);
+    console.time("draw-calculator-cli/run took:");
 
     const program = new Command();
     program
@@ -119,6 +120,7 @@ async function main() {
     writeToOutput(outputDir, network, draw.drawId.toString(), "prizes", prizes);
     parseAndWriteAddressesToOutput(outputDir, network, draw.drawId.toString(), prizes);
 
-    debug(`exiting program`); // exit with zero status - does commander do this?
+    console.timeEnd("draw-calculator-cli/run took:");
+    debug(`exiting program`);
 }
 main();

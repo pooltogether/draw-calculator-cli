@@ -19,7 +19,7 @@ export async function runCalculateDrawResultsWorker(
         filename: resolve(__dirname, "../src/workers/calculatePrizeForUser.js"),
     });
 
-    const prizes = await Promise.all(
+    let prizes = await Promise.all(
         normalizedUserBalances.map(async (userBalance: NormalizedUserBalance) => {
             debug(
                 `creating thread for ${
@@ -51,7 +51,12 @@ export async function runCalculateDrawResultsWorker(
             return await piscina.run(workerArgs);
         })
     );
+    // remove empty arrays
+    prizes = prizes.filter((prize) => {
+        return prize.length > 0;
+    });
+    // remove undefined values
     const filteredPrizes: Prize[][] = filterUndef<Prize[]>(prizes);
-    debug(`runCalculateDrawResultsWorker returning ${prizes.length} results..`);
+    debug(`runCalculateDrawResultsWorker returning ${filteredPrizes.length} results..`);
     return filteredPrizes;
 }

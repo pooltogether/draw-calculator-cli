@@ -16,6 +16,7 @@ module.exports = function calculatePrizeForUser({ user, prizeDistribution, draw 
 
     // calls calculateDrawResults js lib
     let results;
+    debug(`in worker thread user is ${JSON.stringify(_user)}`);
     try {
         results = drawCalculatorLib.calculateDrawResults(prizeDistribution, _draw, _user); // all sync
     } catch (error) {
@@ -29,14 +30,21 @@ module.exports = function calculatePrizeForUser({ user, prizeDistribution, draw 
 
     const prizesAwardable = results.prizes;
 
-    const prizes = prizesAwardable.map((prize) => {
-        return {
-            address: user.address,
-            pick: prize.pick.toString(),
-            tier: prize.distributionIndex,
-            amount: prize.amount.toString(),
-        };
-    });
+    const prizes = prizesAwardable
+        .map((prize) => {
+            if (prize.amount.eq(BigNumber.from(0))) {
+                return undefined;
+            }
+            return {
+                address: user.address,
+                pick: prize.pick.toString(),
+                tier: prize.distributionIndex,
+                amount: prize.amount.toString(),
+            };
+        })
+        .filter((prize) => prize !== undefined);
+
+    // const nonZeroPrizes = prizes.filter((prize) => prize !== undefined);
 
     debug(`worker thread: result: user ${_user.address} had ${prizes.length} prizes`);
 
