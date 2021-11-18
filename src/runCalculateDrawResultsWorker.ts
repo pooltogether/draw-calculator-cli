@@ -1,9 +1,9 @@
 import { BigNumber } from "ethers";
 import Piscina from "piscina";
 import { Draw, PrizeDistribution } from "@pooltogether/draw-calculator-js";
-import { NormalizedUserBalance, Prize } from "../types";
+import { NormalizedUserBalance, Prize } from "./types";
 import { resolve } from "path";
-import { filterUndef } from "./filterUndefinedValues";
+import { filterUndef } from "./utils/filterUndefinedValues";
 
 const debug = require("debug")("pt:draw-calculator-cli");
 

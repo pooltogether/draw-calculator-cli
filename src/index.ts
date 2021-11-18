@@ -1,21 +1,21 @@
 import { Command } from "commander";
-import { getDrawBufferAddress } from "./utils/getDrawBufferAddress";
-import { getDrawFromDrawId } from "./utils/getDrawFromDrawId";
-import { getPrizeDistribution } from "./utils/getPrizeDistribution";
-import { getPrizeDistributionBufferAddress } from "./utils/getPrizeDistributionAddress";
-import { getRpcProvider } from "./utils/getRpcProvider";
-import { getAverageTotalSuppliesFromTicket } from "./utils/getAverageTotalSuppliesFromTicket";
-import { getUserAccountsFromSubgraphForTicket } from "./utils/getUserAccountsFromSubgraphForTicket";
+import { getDrawBufferAddress } from "./getters/getDrawBufferAddress";
+import { getDrawFromDrawId } from "./getters/getDrawFromDrawId";
+import { getPrizeDistribution } from "./getters/getPrizeDistribution";
+import { getPrizeDistributionBufferAddress } from "./getters/getPrizeDistributionAddress";
+import { getRpcProvider } from "./getters/getRpcProvider";
+import { getAverageTotalSuppliesFromTicket } from "./getters/getAverageTotalSuppliesFromTicket";
+import { getUserAccountsFromSubgraphForTicket } from "./getters/getUserAccountsFromSubgraphForTicket";
 import { validateInputs } from "./utils/validateInputs";
 import { Account, NormalizedUserBalance, Prize, UserBalance } from "./types";
 import { filterUndef } from "./utils/filterUndefinedValues";
 import { BigNumber } from "ethers";
-import { calculateUserBalanceFromAccount } from "./utils/calculateUserBalanceFromAccount";
+import { calculateUserBalanceFromAccount } from "./calculate/calculateUserBalanceFromAccount";
 import { normalizeUserBalances } from "./utils/normalizeUserBalances";
-import { runCalculateDrawResultsWorker } from "./utils/runCalculateDrawResultsWorker";
+import { runCalculateDrawResultsWorker } from "./runCalculateDrawResultsWorker";
 import { PrizeDistribution, Draw } from "@pooltogether/draw-calculator-js";
-import { writeToOutput } from "./utils/writeToOutput";
-import { parseAndWriteAddressesToOutput } from "./utils/parseAndWriteAddressesToOutput";
+import { writeToOutput } from "./output/writeToOutput";
+import { parseAndWriteAddressesToOutput } from "./output/parseAndWriteAddressesToOutput";
 
 const debug = require("debug")("pt:draw-calculator-cli");
 

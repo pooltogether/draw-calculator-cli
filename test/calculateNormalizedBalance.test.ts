@@ -1,5 +1,5 @@
 import { BigNumber } from 'ethers';
-import { calculateNormalizedBalance } from '../src/utils/calculateNormalizedBalance';
+import { calculateNormalizedBalance } from '../src/calculate/calculateNormalizedBalance';
 
 describe('calculateNormalizedBalance()', () => {
     it('polygon drawId 32', () => {

@@ -1,6 +1,6 @@
 import { BigNumber } from 'ethers';
 import { Draw } from '@pooltogether/draw-calculator-js';
-import { runCalculateDrawResultsWorker } from '../src/utils/runCalculateDrawResultsWorker';
+import { runCalculateDrawResultsWorker } from '../src/runCalculateDrawResultsWorker';
 
 describe('runCalculateDrawResultsWorker', () => {
     it('creates a thread and returns result', async () => {

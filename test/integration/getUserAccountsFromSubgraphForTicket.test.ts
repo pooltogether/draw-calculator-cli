@@ -1,5 +1,5 @@
 import { BigNumber } from 'ethers';
-import { getUserAccountsFromSubgraphForTicket } from '../../src/utils/getUserAccountsFromSubgraphForTicket';
+import { getUserAccountsFromSubgraphForTicket } from '../../src/getters/getUserAccountsFromSubgraphForTicket';
 
 describe('call the graph endpoint', () => {
     it('returns sane result', async () => {
