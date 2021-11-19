@@ -117,7 +117,7 @@ async function main() {
     debug(`draw calc workers returned: ${prizes.length} prizes`);
 
     // now write prizes to outputDir as JSON blob
-    writeToOutput(outputDir, network, draw.drawId.toString(), "prizes", prizes);
+    writeToOutput(outputDir, network, draw.drawId.toString(), "prizes", prizes.flat(1));
     parseAndWriteAddressesToOutput(outputDir, network, draw.drawId.toString(), prizes);
 
     console.timeEnd("draw-calculator-cli/run took:");

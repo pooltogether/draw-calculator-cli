@@ -1,4 +1,4 @@
-import { getSubgraphUrlForNetwork } from "../network/getSubgraphUrlForNetwork";
+import { getSubgraphUrlForNetwork } from "./getSubgraphUrlForNetwork";
 import { request, gql } from "graphql-request";
 import { Account } from "../types";
 

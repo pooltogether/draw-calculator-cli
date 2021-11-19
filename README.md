@@ -9,7 +9,8 @@
 # Draw Calculator CLI
 
 [![CI](https://github.com/pooltogether/draw-calculator-cli/actions/workflows/main.yml/badge.svg)](https://github.com/pooltogether/draw-calculator-cli/actions/workflows/main.yml)
-
+[![npm version](https://badge.fury.io/js/@pooltogether%2Fdraw-calculator-cli.svg)](https://badge.fury.io/js/@pooltogether%2Fdraw-calculator-cli)
+[![TypeScript definitions on DefinitelyTyped](https://definitelytyped.org/badges/standard.svg)](https://definitelytyped.org)
 A NodeJs CLI tool for calculating prizes for PoolTogether v4 draws.
 
 ## Description
@@ -19,34 +20,29 @@ This CLI uses the [TWAB subgraphs](https://github.com/pooltogether/twab-subgraph
 Then creates a thread for each address (using [Piscina](https://www.npmjs.com/package/piscina)) to call the [Draw Calculator JS library](https://github.com/pooltogether/draw-calculators-js) and outputs a `prizes.json` file (written to `outputDir` CLI arg) with structure:
 
 ```js
- [
-   [
-     {
-        address: "0xa..",
-        amount: "12183712897312",
-
-     },
-     ...
-   ],
-   [
-      {
-        address: "0xb..",
-        amount: "223132132",
-
-     },
-   ],
-   ...
- ]
-
+[
+    {
+        address: "0x1a",
+        pick: "1319",
+        tier: 5,
+        amount: "9999999",
+    },
+    {
+        address: "0x1b",
+        pick: "2636",
+        tier: 5,
+        amount: "9999999",
+    },
+];
 ```
 
-alongside a per address json of similar structure for each winning address.
+alongside a per-address json of similar structure for each winning address.
 
 ### Adding a new network
 
-1. Create a new subgraph for that network.
-1. Add the subgraph query endpoint to `src/constants.ts`
-1. Add Ethers Provider RPC URL to the `.env` and lookup logic to `src/utils/getRpcProvider.ts`
+1. Create a (new subgraph)[https://github.com/pooltogether/twab-subgraph] for the network.
+1. Add the subgraph query endpoint to `src/constants.ts` and lookup logic to `src/network/getSubgraphUrlForNetwork.ts`
+1. Add Ethers Provider RPC URL to the `.env` and lookup logic to `src/getters/getRpcProvider.ts`
 
 ## Usage
 
@@ -65,6 +61,8 @@ alongside a per address json of similar structure for each winning address.
 .requiredOption("-o, --outputDir <string>", "relative path to output resulting JSON blob");`
 ```
 
+### Example Use
+
 For example:
 `node ./dist/index.js -n mainnet -t 0xdd4d117723C257CEe402285D3aCF218E9A8236E1 -d 8 -o ./results`
 will run the CLI for Mainnet ticket "0xdd4d117723C257CEe402285D3aCF218E9A8236E1" for drawId 8, and output the resulting JSON files in ./results directory.
@@ -73,7 +71,7 @@ will run the CLI for Mainnet ticket "0xdd4d117723C257CEe402285D3aCF218E9A8236E1"
 will run the CLI for Polygon ticket "0xdd4d117723C257CEe402285D3aCF218E9A8236E1" for drawId 32, and output the resulting JSON files in ./results directory.
 
 Rinkeby:
-`node ./dist/index.js -n rinkeby -t 0xF04E1400Cf4f0867880e88e2201EDecCDD36227c -d 10 -o ./results`
+`node ./dist/index.js -n rinkeby -t 0xF04E1400Cf4f0867880e88e2201EDecCDD36227c -d 1 -o ./results`
 
 Mumbai:
-`node ./dist/index.js -n mumbai -t 0x8c26F9526a0b9639Edb7080dFba596e8FeFafAcC -d 10 -o ./results`
+`node ./dist/index.js -n mumbai -t 0x8c26F9526a0b9639Edb7080dFba596e8FeFafAcC -d 1 -o ./results`
