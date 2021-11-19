@@ -10,7 +10,7 @@
 
 [![CI](https://github.com/pooltogether/draw-calculator-cli/actions/workflows/main.yml/badge.svg)](https://github.com/pooltogether/draw-calculator-cli/actions/workflows/main.yml)
 
-A NodeJs CLI tool for calculating prizes for PoolTogether v4.
+A NodeJs CLI tool for calculating prizes for PoolTogether v4 draws.
 
 ## Description
 
@@ -71,3 +71,9 @@ will run the CLI for Mainnet ticket "0xdd4d117723C257CEe402285D3aCF218E9A8236E1"
 
 `node ./dist/index.js -n polygon -t 0x6a304dFdb9f808741244b6bfEe65ca7B3b3A6076 -d 32 -o ./results`
 will run the CLI for Polygon ticket "0xdd4d117723C257CEe402285D3aCF218E9A8236E1" for drawId 32, and output the resulting JSON files in ./results directory.
+
+Rinkeby:
+`node ./dist/index.js -n rinkeby -t 0xF04E1400Cf4f0867880e88e2201EDecCDD36227c -d 10 -o ./results`
+
+Mumbai:
+`node ./dist/index.js -n mumbai -t 0x8c26F9526a0b9639Edb7080dFba596e8FeFafAcC -d 10 -o ./results`

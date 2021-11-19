@@ -1,11 +1,11 @@
 import { Command } from "commander";
 import { getDrawBufferAddress } from "./getters/getDrawBufferAddress";
-import { getDrawFromDrawId } from "./getters/getDrawFromDrawId";
-import { getPrizeDistribution } from "./getters/getPrizeDistribution";
+import { getDrawFromDrawId } from "./network/getDrawFromDrawId";
+import { getPrizeDistribution } from "./network/getPrizeDistribution";
 import { getPrizeDistributionBufferAddress } from "./getters/getPrizeDistributionAddress";
 import { getRpcProvider } from "./getters/getRpcProvider";
-import { getAverageTotalSuppliesFromTicket } from "./getters/getAverageTotalSuppliesFromTicket";
-import { getUserAccountsFromSubgraphForTicket } from "./getters/getUserAccountsFromSubgraphForTicket";
+import { getAverageTotalSuppliesFromTicket } from "./network/getAverageTotalSuppliesFromTicket";
+import { getUserAccountsFromSubgraphForTicket } from "./network/getUserAccountsFromSubgraphForTicket";
 import { validateInputs } from "./utils/validateInputs";
 import { Account, NormalizedUserBalance, Prize, UserBalance } from "./types";
 import { filterUndef } from "./utils/filterUndefinedValues";

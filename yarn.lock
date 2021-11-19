@@ -1762,7 +1762,7 @@
   resolved "https://registry.yarnpkg.com/@pooltogether/fixed-point/-/fixed-point-1.0.0.tgz#2c9fb9fe1cca557ca2be7b9ed7414d5edd5a816f"
   integrity sha512-YhvjswZuDpKK/NFboyeFWoXhq4763kbi/hNx0L5+6kCRUq8WruvXR4WFvWlDo+5Dx1UsaOnPygAMfrJT0h7bMw==
 
-"@pooltogether/hardhat-deploy-markdown-export@^0.1.1":
+"@pooltogether/hardhat-deploy-markdown-export@^0.1.0", "@pooltogether/hardhat-deploy-markdown-export@^0.1.1":
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/@pooltogether/hardhat-deploy-markdown-export/-/hardhat-deploy-markdown-export-0.1.1.tgz#95c8fb6b63d4b721146917e11f53d24fc06f11cf"
   integrity sha512-qawd7dakhNIzk4CHbAI5lbEM25PuZXHfeIwLBQP5qxAVkDJnR7H7vAxksGdlHYYi4XddmC0W+QPlIFSAi8jTaA==
@@ -1781,6 +1781,18 @@
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@pooltogether/v4-core/-/v4-core-1.0.0.tgz#a1969eba8be17776b0148aad47a7d0be68f6c178"
   integrity sha512-e+37K1skcsTGn1JMpKSghtJnjyDmopNtTmqFcdDHGpZTC8Aclb/zSvb2OxHIThkjYZdJ7P6dcvZTR3y3RAyoDQ==
+  dependencies:
+    "@openzeppelin/contracts" "4.3.1"
+    "@pooltogether/fixed-point" "1.0.0"
+    "@pooltogether/owner-manager-contracts" "1.1.0"
+    "@pooltogether/pooltogether-rng-contracts" "1.4.0"
+    "@pooltogether/yield-source-interface" "1.3.0"
+    deploy-eip-1820 "1.0.0"
+
+"@pooltogether/v4-core@^1.1.0":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@pooltogether/v4-core/-/v4-core-1.1.1.tgz#8b96635ce3016354c10e790ece0fbf9cca22c9b3"
+  integrity sha512-l+odkcWdfRbAaqMfJdJPDyA5BvpRpWwmafIQhB1ZXdqlweW+V1c08NF+2h3/v6k40rwP+FeiKRGmB5m4OsfPaQ==
   dependencies:
     "@openzeppelin/contracts" "4.3.1"
     "@pooltogether/fixed-point" "1.0.0"
@@ -1811,10 +1823,36 @@
   resolved "https://registry.yarnpkg.com/@pooltogether/v4-periphery/-/v4-periphery-1.0.0.tgz#a24f5acee41b1673475ab6d5f0f5f4e32974445d"
   integrity sha512-pLoVvNBS94X0NWdukZjXNV0nlJU39LqFmH9ms0MpQAbYvlt8TCAx/JS6/a9ePE4rTH7qlwcJC/QneGuIZNct0g==
 
+"@pooltogether/v4-periphery@1.0.0-beta.8":
+  version "1.0.0-beta.8"
+  resolved "https://registry.yarnpkg.com/@pooltogether/v4-periphery/-/v4-periphery-1.0.0-beta.8.tgz#c1ae5e26b72ece822399599de240c1cb9a5fefce"
+  integrity sha512-dNzxVz3o/oVONW2W+SyuiDW/xBJzGjEuOBYSEF0+9PsVrO8Lf+eNjgmcJ6dmr8aq3vO1kJkgUi5AN+Y12DZo0A==
+
+"@pooltogether/v4-testnet@^1.0.0-beta.12":
+  version "1.0.0-beta.12"
+  resolved "https://registry.yarnpkg.com/@pooltogether/v4-testnet/-/v4-testnet-1.0.0-beta.12.tgz#63edea277b3a4fc28fe9e86ab0b47420d7e84a08"
+  integrity sha512-SCLCRKq9SsA7ExuN86ZkumpnS1f5lMmdSvgpLemaK9vkakgYizKDr0AZGADYq+ofAheUKxR/U6vM9C/oymH3bw==
+  dependencies:
+    "@openzeppelin/contracts" "4.3.2"
+    "@pooltogether/draw-calculator-js" "^1.0.0-beta.25"
+    "@pooltogether/hardhat-deploy-markdown-export" "^0.1.0"
+    "@pooltogether/owner-manager-contracts" "1.1.0"
+    "@pooltogether/v4-core" "^1.1.0"
+    "@pooltogether/v4-periphery" "1.0.0-beta.8"
+    "@pooltogether/v4-timelocks" "1.0.0-beta.4"
+    "@pooltogether/yield-source-interface" "1.3.0"
+    find "^0.3.0"
+    glob "^7.1.7"
+
 "@pooltogether/v4-timelocks@1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@pooltogether/v4-timelocks/-/v4-timelocks-1.0.0.tgz#ae1a7a378b79c72f1c55b7cb778eb192c4dd32cc"
   integrity sha512-8rcDPOrEab1Ka/Ws/QnUZTXef4C48iw3Rc4eHbmA59nzTe2hF36Q1Q5xX5KpWNzAAJOlzDBqGf1FOyk4rHGvxA==
+
+"@pooltogether/v4-timelocks@1.0.0-beta.4":
+  version "1.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/@pooltogether/v4-timelocks/-/v4-timelocks-1.0.0-beta.4.tgz#a3e2098b0821f59ae16b7260c63de0c9700c9be1"
+  integrity sha512-AKAd+PdtnHWz/HSWfH881guCUbUM9insQqJ0DI8FMZ4HgfbaFnHIMWFDYmrcc0iDqAS5wZVNM/kz66+qOWExHQ==
 
 "@pooltogether/yield-source-interface@1.3.0":
   version "1.3.0"

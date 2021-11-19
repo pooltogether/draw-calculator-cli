@@ -1,2 +1,4 @@
-export ALCHEMY_URL=''
 export MATICVIGIL_URL=''
+export MUMBAI_URL=''
+export ALCHEMY_MAINNET_URL=''
+export ALCHEMY_RINKEBY_URL=''
