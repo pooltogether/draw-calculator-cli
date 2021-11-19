@@ -18,6 +18,7 @@ import { writeToOutput } from "./output/writeToOutput";
 import { parseAndWriteAddressesToOutput } from "./output/parseAndWriteAddressesToOutput";
 
 const debug = require("debug")("pt:draw-calculator-cli");
+const worker = require("./workers/calculatePrizeForUser");
 
 async function main() {
     debug(`Running Draw Calculator CLI tool..`);
