@@ -10,7 +10,7 @@
 
 [![CI](https://github.com/pooltogether/draw-calculator-cli/actions/workflows/main.yml/badge.svg)](https://github.com/pooltogether/draw-calculator-cli/actions/workflows/main.yml)
 [![npm version](https://badge.fury.io/js/@pooltogether%2Fdraw-calculator-cli.svg)](https://badge.fury.io/js/@pooltogether%2Fdraw-calculator-cli)
-[![TypeScript definitions on DefinitelyTyped](https://definitelytyped.org/badges/standard.svg)](https://definitelytyped.org)
+[![TypeScript definitions on DefinitelyTyped](https://definitelytyped.org/badges/standard.svg)](https://definitelytyped.org)\
 A NodeJs CLI tool for calculating prizes for PoolTogether v4 draws.
 
 ## Description
@@ -36,7 +36,9 @@ Then creates a thread for each address (using [Piscina](https://www.npmjs.com/pa
 ];
 ```
 
-alongside a per-address json of similar structure for each winning address.
+alongside a `<address>.json` of similar structure for each winning address.\
+
+This tool can be run locally or in a cloud setting.
 
 ### Adding a new network
 
@@ -63,15 +65,20 @@ alongside a per-address json of similar structure for each winning address.
 
 ### Example Use
 
-For example:
+#### Mainnet
+
 `node ./dist/index.js -n mainnet -t 0xdd4d117723C257CEe402285D3aCF218E9A8236E1 -d 8 -o ./results`
 will run the CLI for Mainnet ticket "0xdd4d117723C257CEe402285D3aCF218E9A8236E1" for drawId 8, and output the resulting JSON files in ./results directory.
+
+#### Polygon
 
 `node ./dist/index.js -n polygon -t 0x6a304dFdb9f808741244b6bfEe65ca7B3b3A6076 -d 32 -o ./results`
 will run the CLI for Polygon ticket "0xdd4d117723C257CEe402285D3aCF218E9A8236E1" for drawId 32, and output the resulting JSON files in ./results directory.
 
-Rinkeby:
+#### Rinkeby
+
 `node ./dist/index.js -n rinkeby -t 0xF04E1400Cf4f0867880e88e2201EDecCDD36227c -d 1 -o ./results`
 
-Mumbai:
+#### Mumbai:
+
 `node ./dist/index.js -n mumbai -t 0x8c26F9526a0b9639Edb7080dFba596e8FeFafAcC -d 1 -o ./results`
