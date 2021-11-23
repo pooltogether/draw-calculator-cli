@@ -27,7 +27,7 @@ async function main() {
     const program = new Command();
     program
         .requiredOption(
-            "-n, --network <string>",
+            "-c, --chainId <string>",
             "select network (mainnet, rinkeby, polygon or binance)"
         )
         .requiredOption("-t, --ticket <string>", "ticket contract address")
@@ -36,20 +36,20 @@ async function main() {
         .requiredOption("-o, --outputDir <string>", "relative path to output resulting JSON blob");
     program.parse(process.argv);
     const options = program.opts();
-    const network = options.network;
+    const chainId = options.chainId;
     const ticket = options.ticket;
     const drawId = options.drawId;
     const outputDir = options.outputDir;
 
     // validate inputs
-    validateInputs(network, ticket, drawId, outputDir);
-    const provider = getRpcProvider(network);
+    validateInputs(chainId, ticket, drawId, outputDir);
+    const provider = getRpcProvider(chainId);
 
     // lookup draw buffer address for network
-    const drawBufferAddress = getDrawBufferAddress(network);
+    const drawBufferAddress = getDrawBufferAddress(chainId);
 
     // lookup PrizeDistrbution address for network
-    const prizeDistributionBufferAddress = getPrizeDistributionBufferAddress(network); // refactor to use same code as getDrawBufferAddress
+    const prizeDistributionBufferAddress = getPrizeDistributionBufferAddress(chainId); // refactor to use same code as getDrawBufferAddress
     // get PrizeDistribution for drawId
     const prizeDistribution: PrizeDistribution = await getPrizeDistribution(
         prizeDistributionBufferAddress,
@@ -62,13 +62,9 @@ async function main() {
     const drawStartTimestamp = drawTimestamp - (prizeDistribution as any).startTimestampOffset;
     const drawEndTimestamp = drawTimestamp - (prizeDistribution as any).endTimestampOffset;
 
-    // for testing remove
-    debug("drawStartTimestamp: ", drawStartTimestamp);
-    debug("drawEndTimestamp: ", drawEndTimestamp);
-
     // get accounts from subgraph for ticket and network
     const userAccounts: Account[] = await getUserAccountsFromSubgraphForTicket(
-        network,
+        chainId,
         ticket,
         drawStartTimestamp,
         drawEndTimestamp
@@ -118,8 +114,8 @@ async function main() {
     debug(`draw calc workers returned: ${prizes.length} prizes`);
 
     // now write prizes to outputDir as JSON blob
-    writeToOutput(outputDir, network, draw.drawId.toString(), "prizes", prizes.flat(1));
-    parseAndWriteAddressesToOutput(outputDir, network, draw.drawId.toString(), prizes);
+    writeToOutput(outputDir, chainId, draw.drawId.toString(), "prizes", prizes.flat(1));
+    parseAndWriteAddressesToOutput(outputDir, chainId, draw.drawId.toString(), prizes);
 
     console.timeEnd("draw-calculator-cli/run took:");
     debug(`exiting program`);
