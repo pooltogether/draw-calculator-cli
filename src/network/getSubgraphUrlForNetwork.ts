@@ -5,17 +5,17 @@ import {
     MUMBAI_TWAB_SUBGRAPH_URL,
 } from "../constants";
 
-export function getSubgraphUrlForNetwork(network: string): string {
-    switch (network) {
-        case "mainnet":
+export function getSubgraphUrlForNetwork(chainId: string): string {
+    switch (chainId) {
+        case "1":
             return MAINNET_TWAB_SUBGRAPH_URL;
-        case "polygon":
+        case "137":
             return POLYGON_TWAB_SUBGRAPH_URL;
-        case "rinkeby":
+        case "4":
             return RINKEBY_TWAB_SUBGRAPH_URL;
-        case "mumbai":
+        case "80001":
             return MUMBAI_TWAB_SUBGRAPH_URL;
         default:
-            throw new Error(`Unsupported network: ${network}`);
+            throw new Error(`Unsupported network: ${chainId}`);
     }
 }

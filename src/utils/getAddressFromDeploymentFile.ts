@@ -1,18 +1,27 @@
 import { readFileSync } from "fs";
 
-export function getAddressFromDeploymentFile(network: string, contractName: string): string {
+export function getAddressFromDeploymentFile(chainId: string, contractName: string): string {
     let mainnetOrTestnet;
-    if (network == "mainnet" || network == "polygon") {
+    let networkName;
+    if (chainId == "1") {
         mainnetOrTestnet = "v4-mainnet";
-    } else if (network == "rinkeby" || network == "mumbai") {
+        networkName = "mainnet";
+    } else if (chainId == "137") {
+        mainnetOrTestnet = "v4-mainnet";
+        networkName = "polygon";
+    } else if (chainId == "4") {
         mainnetOrTestnet = "v4-testnet";
+        networkName = "rinkeby";
+    } else if (chainId == "80001") {
+        mainnetOrTestnet = "v4-testnet";
+        networkName = "mumbai";
     } else {
         throw new Error(
-            `Cannot find deployment file for contract ${contractName} on network: ${network}`
+            `Cannot find deployment file for contract ${contractName} on network: ${networkName}`
         );
     }
 
-    let path = `node_modules/@pooltogether/${mainnetOrTestnet}/deployments/${network}/${contractName}.json`;
+    let path = `node_modules/@pooltogether/${mainnetOrTestnet}/deployments/${networkName}/${contractName}.json`;
 
     return JSON.parse(readFileSync(path, { encoding: "utf-8" })).address;
 }

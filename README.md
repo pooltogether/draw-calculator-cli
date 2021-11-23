@@ -54,7 +54,7 @@ This tool can be run locally or in a cloud setting.
 1. The CLI has a number of required args:
 
 ```js
-.requiredOption("-n, --network <string>", "select network (mainnet, rinkeby, polygon or binance etc.)")
+.requiredOption("-c, --chainId <string>", "select network (mainnet (1), rinkeby (4), polygon (137) or mumbai (80001) etc.)")
 
 .requiredOption("-t, --ticket <string>", "ticket contract address")
 
@@ -67,18 +67,18 @@ This tool can be run locally or in a cloud setting.
 
 #### Mainnet
 
-`node ./dist/index.js -n mainnet -t 0xdd4d117723C257CEe402285D3aCF218E9A8236E1 -d 8 -o ./results`
+`node ./dist/index.js -c 1 -t 0xdd4d117723C257CEe402285D3aCF218E9A8236E1 -d 8 -o ./results`
 will run the CLI for Mainnet ticket "0xdd4d117723C257CEe402285D3aCF218E9A8236E1" for drawId 8, and output the resulting JSON files in ./results directory.
 
 #### Polygon
 
-`node ./dist/index.js -n polygon -t 0x6a304dFdb9f808741244b6bfEe65ca7B3b3A6076 -d 32 -o ./results`
+`node ./dist/index.js -c 137 -t 0x6a304dFdb9f808741244b6bfEe65ca7B3b3A6076 -d 32 -o ./results`
 will run the CLI for Polygon ticket "0xdd4d117723C257CEe402285D3aCF218E9A8236E1" for drawId 32, and output the resulting JSON files in ./results directory.
 
 #### Rinkeby
 
-`node ./dist/index.js -n rinkeby -t 0xF04E1400Cf4f0867880e88e2201EDecCDD36227c -d 1 -o ./results`
+`node ./dist/index.js -c 4 -t 0xF04E1400Cf4f0867880e88e2201EDecCDD36227c -d 1 -o ./results`
 
 #### Mumbai:
 
-`node ./dist/index.js -n mumbai -t 0x8c26F9526a0b9639Edb7080dFba596e8FeFafAcC -d 1 -o ./results`
+`node ./dist/index.js -c 80001 -t 0x8c26F9526a0b9639Edb7080dFba596e8FeFafAcC -d 1 -o ./results`

@@ -5,12 +5,12 @@ import { Account } from "../types";
 const debug = require("debug")("pt:draw-calculator-cli");
 
 export async function getUserAccountsFromSubgraphForTicket(
-    network: string,
+    chainId: string,
     ticket: string,
     drawStartTime: number,
     drawEndTime: number
 ): Promise<Account[]> {
-    const subgraphURL = getSubgraphUrlForNetwork(network);
+    const subgraphURL = getSubgraphUrlForNetwork(chainId);
 
     let offset = 0;
     const maxPageSize = 1000;
