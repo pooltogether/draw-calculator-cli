@@ -53,6 +53,10 @@ export async function runCalculateDrawResultsWorker(
     );
     // remove empty arrays
     prizes = prizes.filter((prize) => {
+        if (!prize) {
+            return false;
+        }
+
         return prize.length > 0;
     });
     // remove undefined values
