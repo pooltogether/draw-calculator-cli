@@ -3,6 +3,12 @@ import { resolve } from 'path';
 import { rmSync } from 'fs';
 import { getClaimTier } from '../helpers/getClaimTier';
 
+import { expect } from 'chai';
+import { solidity } from 'ethereum-waffle';
+import { BigNumber } from 'ethers';
+
+// chai.use(solidity);
+
 describe('run CLI tool ()', () => {
     beforeEach(() => {
         jest.setTimeout(120000);
@@ -27,7 +33,7 @@ describe('run CLI tool ()', () => {
         const prizesFilePath = resolvedDirPath + '/prizes.json';
         const results = require(prizesFilePath);
 
-        expect(results.length).toBeGreaterThan(0);
+        expect(results.length).to.be.gt(0);
 
         for (let i = 0; i < 10; i++) {
             const exampleResult = results[i];
@@ -40,8 +46,8 @@ describe('run CLI tool ()', () => {
                 exampleResult.tier,
             );
 
-            expect(prizeTierResult.tier).toBe(exampleResult.tier.toString());
-            // expect(prizeTierResult.amount.toString()).toBe(exampleResult.amount.toString());
+            expect(prizeTierResult.tier).to.equal(exampleResult.tier.toString());
+            // expect(prizeTierResult.amount).to.be.closeTo(BigNumber.from(exampleResult.amount), 100);
         }
     });
 });
