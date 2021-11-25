@@ -15,7 +15,7 @@
         "reinstall": "rm -rf node_modules && rm -rf dist/ && yarn",
         "start": "tsdx watch",
         "build": "tsdx build && cp -rf src/workers/* dist/workers",
-        "test": "yarn build && tsdx test",
+        "test": "tsdx test",
         "lint": "tsdx lint",
         "prepare": "yarn build",
         "size": "size-limit",
@@ -49,6 +49,10 @@
         "typedoc-plugin-markdown": "^3.11.0",
         "typescript": "4.2.3",
         "yalc": "^1.0.0-pre.53"
+    },
+    "jest": {
+        "testTimeout": 120000,
+        "testEnvironment": "node"
     },
     "peerDependencies": {},
     "husky": {
