@@ -24,6 +24,9 @@ jobs:
 
             - name: Test
               run: yarn test
+              env:
+                  MATICVIGIL_URL: ${{secrets.MATICVIGIL_URL}}
+                  ALCHEMY_MAINNET_URL: ${{secrets.ALCHEMY_MAINNET_URL}}
 
             - name: Build
               run: yarn build
