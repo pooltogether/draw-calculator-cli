@@ -7,8 +7,8 @@ export function getRpcProvider(chainId: string): providers.Provider {
     console.log("getRpcProvider for chainId ", chainId);
 
     if (chainId == "1") {
-        providerURL = process.env.ALCHEMY_URL;
-        console.log("checking for ALCHEMY_URL ", providerURL);
+        providerURL = process.env.ALCHEMY_MAINNET_URL;
+        console.log("checking for ALCHEMY_MAINNET_URL ", providerURL);
         if (!providerURL) {
             throwError(chainId);
         }
