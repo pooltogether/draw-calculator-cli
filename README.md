@@ -36,7 +36,7 @@ Then creates a thread for each address (using [Piscina](https://www.npmjs.com/pa
 ];
 ```
 
-alongside a `<address>.json` of similar structure for each winning address.\
+alongside a `<address>.json` of similar structure for each winning address.
 
 This tool can be run locally or in a cloud setting.
 
@@ -48,7 +48,7 @@ This tool can be run locally or in a cloud setting.
 
 ## Usage
 
-1. Install the CLI tool by running `yarn` in this directory.
+1. Install the CLI tool by running `yarn add @pooltogether/draw-calculator-cli`
 1. Add the required env variables listed in `.envrc.example` to `.envrc` and run `direnv allow`.
 
 1. The CLI has a number of required args:

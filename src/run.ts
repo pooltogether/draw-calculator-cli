@@ -15,12 +15,14 @@ import { runCalculateDrawResultsWorker } from "./runCalculateDrawResultsWorker";
 import { PrizeDistribution, Draw } from "@pooltogether/draw-calculator-js";
 import { writeToOutput } from "./output/writeToOutput";
 import { parseAndWriteAddressesToOutput } from "./output/parseAndWriteAddressesToOutput";
+import { hrtime } from "process";
+import { createOrUpdateStatus } from "./utils/createOrUpdateStatus";
 
 const debug = require("debug")("pt:draw-calculator-cli");
 
 export async function run(chainId: string, ticket: string, drawId: string, outputDir: string) {
     debug(`Running Draw Calculator CLI tool..`);
-    console.time("draw-calculator-cli/run took:");
+    const startTime = hrtime();
 
     // validate inputs
     validateInputs(chainId, ticket, drawId, outputDir);
@@ -98,6 +100,11 @@ export async function run(chainId: string, ticket: string, drawId: string, outpu
     writeToOutput(outputDir, chainId, draw.drawId.toString(), "prizes", prizes.flat(1));
     parseAndWriteAddressesToOutput(outputDir, chainId, draw.drawId.toString(), prizes);
 
-    console.timeEnd("draw-calculator-cli/run took:");
+    const elapsedSeconds = parseHrtimeToSeconds(hrtime(startTime));
+    createOrUpdateStatus(outputDir, chainId, draw.drawId.toString(), elapsedSeconds);
     debug(`exiting program`);
+}
+
+function parseHrtimeToSeconds(hrtime: number[]) {
+    return (hrtime[0] + hrtime[1] / 1e9).toFixed(3);
 }
