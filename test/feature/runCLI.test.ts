@@ -6,6 +6,7 @@ import { getClaimTier } from '../helpers/getClaimTier';
 import { expect } from 'chai';
 import { solidity } from 'ethereum-waffle';
 import { BigNumber } from 'ethers';
+import { getPrizeDistributorAddress } from '../../src/getters/getPrizeDistributorAddress';
 
 // chai.use(solidity);
 
@@ -20,7 +21,9 @@ describe('run CLI tool ()', () => {
         const chainId = '1';
         const drawCalculatorAddress = '0x14d0675580C7255043a3AeD3726F5D7f33292730';
 
-        const resultsPath = `../../${outputDir}/${chainId}/draw${drawId}`;
+        const resultsPath = `../../${outputDir}/${chainId}/${getPrizeDistributorAddress(
+            chainId,
+        )}draw/${drawId}`;
         const resolvedDirPath = resolve(__dirname, resultsPath);
 
         // delete files if they exist

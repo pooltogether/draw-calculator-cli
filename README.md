@@ -63,6 +63,17 @@ This tool can be run locally or in a cloud setting.
 .requiredOption("-o, --outputDir <string>", "relative path to output resulting JSON blob");`
 ```
 
+### Run for Multiple Draws
+
+A convience bash script for running the CLI tool over multiple runs is included at `scripts/runLoop.sh`. After modifying with the desired params, this can be run with:
+
+```sh
+chmod +x ./scripts/runLoop.sh
+
+./scripts/runLoop
+
+```
+
 ### Example Use
 
 #### Mainnet

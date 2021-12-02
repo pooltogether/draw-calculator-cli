@@ -23,5 +23,5 @@ export function getAddressFromDeploymentFile(chainId: string, contractName: stri
 
     let path = `node_modules/@pooltogether/${mainnetOrTestnet}/deployments/${networkName}/${contractName}.json`;
 
-    return JSON.parse(readFileSync(path, { encoding: "utf-8" })).address;
+    return JSON.parse(readFileSync(path, { encoding: "utf-8" })).address.toLowerCase();
 }

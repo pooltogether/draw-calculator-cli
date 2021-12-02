@@ -51,7 +51,7 @@ export async function runCalculateDrawResultsWorker(
             return await piscina.run(workerArgs);
         })
     );
-    // remove empty arrays
+    // remove empty arrays and zero value prizes
     prizes = prizes.filter((prize) => {
         if (!prize) {
             return false;
