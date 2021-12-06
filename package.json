@@ -1,5 +1,5 @@
 {
-    "version": "0.1.0-beta.12",
+    "version": "0.1.0-beta.13",
     "license": "MIT",
     "main": "dist/index.js",
     "typings": "dist/index.d.ts",
@@ -13,7 +13,7 @@
     "scripts": {
         "clean": "rm -rf dist/",
         "reinstall": "rm -rf node_modules && rm -rf dist/ && yarn",
-        "start": "tsdx watch",
+        "start": "nvm use && tsdx watch",
         "build": "tsdx build && cp -rf src/workers/* dist/workers",
         "test": "tsdx test",
         "lint": "tsdx lint",
