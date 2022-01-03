@@ -23,13 +23,13 @@ describe('run CLI tool ()', () => {
 
         const resultsPath = `../../${outputDir}/${chainId}/${getPrizeDistributorAddress(
             chainId,
-        )}draw/${drawId}`;
+        )}/draw/${drawId}`;
         const resolvedDirPath = resolve(__dirname, resultsPath);
 
         // delete files if they exist
         rmSync(resolvedDirPath, { recursive: true, force: true });
 
-        // // generate results
+        // generate results
         await run(chainId, '0xdd4d117723C257CEe402285D3aCF218E9A8236E1', drawId, outputDir);
 
         // now read results
