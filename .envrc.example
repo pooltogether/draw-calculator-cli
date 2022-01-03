@@ -1,4 +1,14 @@
+# Matic RPC url
 export MATICVIGIL_URL=''
+
+# Mumbai (Matic testnet) RPC url
 export MUMBAI_URL=''
+
+# Ethereum mainnet RPC url
 export ALCHEMY_MAINNET_URL=''
+
+# Rinkeby RPC url
 export ALCHEMY_RINKEBY_URL=''
+
+# Avalanche RPC url
+export AVALANCHE_URL=''

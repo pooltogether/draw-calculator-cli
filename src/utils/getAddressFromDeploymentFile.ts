@@ -15,6 +15,9 @@ export function getAddressFromDeploymentFile(chainId: string, contractName: stri
     } else if (chainId == "80001") {
         mainnetOrTestnet = "v4-testnet";
         networkName = "mumbai";
+    } else if (chainId == "43114") {
+        mainnetOrTestnet = "v4-mainnet";
+        networkName = "avalanche";
     } else {
         throw new Error(
             `Cannot find deployment file for contract ${contractName} on network: ${networkName}`
