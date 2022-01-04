@@ -4,11 +4,7 @@ import { rmSync } from 'fs';
 import { getClaimTier } from '../helpers/getClaimTier';
 
 import { expect } from 'chai';
-import { solidity } from 'ethereum-waffle';
-import { BigNumber } from 'ethers';
 import { getPrizeDistributorAddress } from '../../src/getters/getPrizeDistributorAddress';
-
-// chai.use(solidity);
 
 describe('run CLI tool ()', () => {
     beforeEach(() => {
@@ -17,13 +13,13 @@ describe('run CLI tool ()', () => {
 
     it('runCLICommand', async () => {
         const outputDir = './temp';
-        const drawId = '8';
+        const drawId = '65';
         const chainId = '1';
         const drawCalculatorAddress = '0x14d0675580C7255043a3AeD3726F5D7f33292730';
 
         const resultsPath = `../../${outputDir}/${chainId}/${getPrizeDistributorAddress(
             chainId,
-        )}draw/${drawId}`;
+        )}/draw/${drawId}`;
         const resolvedDirPath = resolve(__dirname, resultsPath);
 
         // delete files if they exist
@@ -38,8 +34,13 @@ describe('run CLI tool ()', () => {
 
         expect(results.length).to.be.gt(0);
 
+        // check ten random results
+        const randomMax = results.length;
+
         for (let i = 0; i < 10; i++) {
-            const exampleResult = results[i];
+            const prizeIndex = Math.floor(Math.random() * randomMax);
+
+            const exampleResult = results[prizeIndex];
             const prizeTierResult = await getClaimTier(
                 chainId,
                 drawCalculatorAddress,
@@ -48,9 +49,8 @@ describe('run CLI tool ()', () => {
                 drawId,
                 exampleResult.tier,
             );
-
+            i++;
             expect(prizeTierResult.tier).to.equal(exampleResult.tier.toString());
-            // expect(prizeTierResult.amount).to.be.closeTo(BigNumber.from(exampleResult.amount), 100);
         }
     });
 });

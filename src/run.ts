@@ -31,6 +31,8 @@ export async function run(chainId: string, ticket: string, drawId: string, outpu
     // lookup draw buffer address for network
     const drawBufferAddress = getDrawBufferAddress(chainId);
 
+    console.log(drawBufferAddress);
+
     // lookup PrizeDistrbution address for network
     const prizeDistributionBufferAddress = getPrizeDistributionBufferAddress(chainId); // refactor to use same code as getDrawBufferAddress
     // get PrizeDistribution for drawId
@@ -39,12 +41,15 @@ export async function run(chainId: string, ticket: string, drawId: string, outpu
         drawId,
         provider
     );
+    console.log(prizeDistribution);
     // get draw timestamp using drawId
     const draw: Draw = await getDrawFromDrawId(drawId, drawBufferAddress, provider);
     const drawTimestamp = (draw as any).timestamp;
+    console.log(draw);
     const drawStartTimestamp = drawTimestamp - (prizeDistribution as any).startTimestampOffset;
     const drawEndTimestamp = drawTimestamp - (prizeDistribution as any).endTimestampOffset;
-
+    console.log("drawStartTimestamp:", drawStartTimestamp);
+    console.log("drawEndTimestamp:", drawEndTimestamp);
     // get accounts from subgraph for ticket and network
     const userAccounts: Account[] = await getUserAccountsFromSubgraphForTicket(
         chainId,

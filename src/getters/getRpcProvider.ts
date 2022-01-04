@@ -30,6 +30,12 @@ export function getRpcProvider(chainId: string): providers.Provider {
         if (!providerURL) {
             throwError(chainId);
         }
+    } else if (chainId == "43114") {
+        providerURL = process.env.AVALANCHE_URL;
+        debug("checking for AVALANCHE ", providerURL);
+        if (!providerURL) {
+            throwError(chainId);
+        }
     }
     debug(`using ${providerURL} for JSONRPC provider`);
 

@@ -14,7 +14,7 @@
     "scripts": {
         "clean": "rm -rf dist/",
         "reinstall": "rm -rf node_modules && rm -rf dist/ && yarn",
-        "start": "nvm use && tsdx watch",
+        "start": "tsdx watch",
         "build": "tsdx build && cp -rf src/workers/* dist/workers",
         "test": "tsdx test",
         "lint": "tsdx lint",

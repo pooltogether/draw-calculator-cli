@@ -4,13 +4,13 @@ const debug = require("debug")("pt:draw-calculator-cli");
 
 export function writeToOutput(
     outputDir: string,
-    network: string,
+    chainId: string,
     drawId: string,
     fileName: string,
     blob: any
 ) {
-    const baseOutputPath = `${outputDir}/${network}/${getPrizeDistributorAddress(
-        network
+    const baseOutputPath = `${outputDir}/${chainId}/${getPrizeDistributorAddress(
+        chainId
     )}/draw/${drawId}/`;
     mkdirSync(baseOutputPath, { recursive: true });
     const outputFilePath = `${baseOutputPath}${fileName}.json`;

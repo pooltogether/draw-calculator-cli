@@ -1,9 +1,8 @@
-import { BigNumber } from 'ethers';
 import { getUserAccountsFromSubgraphForTicket } from '../../src/network/getUserAccountsFromSubgraphForTicket';
 
 describe('call the graph endpoint', () => {
     it('polygon draw 30 twab query result contains pierricks address', async () => {
-        // draw 8 timestamps
+        // draw 30 timestamps
         const drawStartTimestamp = 1635879776; //1634930149;
         const drawEndTimestamp = 1635879776; //1635015649;
 

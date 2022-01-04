@@ -32,6 +32,6 @@ describe('runCalculateDrawResultsWorker', () => {
         };
 
         const result = await runCalculateDrawResultsWorker(users, prizeDistribution, draw);
-        console.log('result', await result[0]);
+        console.log('result', result);
     });
 });

@@ -86,6 +86,11 @@ will run the CLI for Mainnet ticket "0xdd4d117723C257CEe402285D3aCF218E9A8236E1"
 `node ./dist/index.js -c 137 -t 0x6a304dFdb9f808741244b6bfEe65ca7B3b3A6076 -d 32 -o ./results`
 will run the CLI for Polygon ticket "0xdd4d117723C257CEe402285D3aCF218E9A8236E1" for drawId 32, and output the resulting JSON files in ./results directory.
 
+#### Avalanche
+
+`node ./dist/index.js -c 43114 -t 0xb27f379c050f6ed0973a01667458af6ecebc1d90 -d 1 -o ./results`
+will run the CLI for Avalanche ticket "0xb27f379c050f6ed0973a01667458af6ecebc1d90" for drawId 1, and output the resulting JSON files in ./results directory.
+
 #### Rinkeby
 
 `node ./dist/index.js -c 4 -t 0xF04E1400Cf4f0867880e88e2201EDecCDD36227c -d 1 -o ./results`

@@ -3,6 +3,7 @@ import {
     POLYGON_TWAB_SUBGRAPH_URL,
     RINKEBY_TWAB_SUBGRAPH_URL,
     MUMBAI_TWAB_SUBGRAPH_URL,
+    AVALANCHE_TWAB_SUBGRAPH_URL,
 } from "../constants";
 
 export function getSubgraphUrlForNetwork(chainId: string): string {
@@ -13,6 +14,8 @@ export function getSubgraphUrlForNetwork(chainId: string): string {
             return POLYGON_TWAB_SUBGRAPH_URL;
         case "4":
             return RINKEBY_TWAB_SUBGRAPH_URL;
+        case "43114":
+            return AVALANCHE_TWAB_SUBGRAPH_URL;
         case "80001":
             return MUMBAI_TWAB_SUBGRAPH_URL;
         default:
