@@ -48,7 +48,7 @@ export async function makeGraphQlQuery(
                 }
             }
         }`;
-        // console.log(`making query: ${queryString}`);
+        console.log(`making query: ${queryString}`);
 
         let query = gql`
             ${queryString}
@@ -56,7 +56,7 @@ export async function makeGraphQlQuery(
 
         data = await request(subgraphURL, query);
         results.push(data.ticket.accounts);
-        // console.log(`got ${data.ticket.accounts.length} more results`);
+        console.log(`got ${data.ticket.accounts.length} more results`);
 
         const numberOfResults = data.ticket.accounts.length;
         if (numberOfResults < maxPageSize) {
@@ -66,5 +66,5 @@ export async function makeGraphQlQuery(
 
         lastId = data.ticket.accounts[data.ticket.accounts.length - 1].id;
     }
-    return results;
+    return results.flat(1);
 }

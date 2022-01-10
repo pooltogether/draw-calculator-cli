@@ -9,8 +9,8 @@
 # polygon usdc ticket: 0x6a304dFdb9f808741244b6bfEe65ca7B3b3A6076
 
 
-startDraw=51;
-endDraw=54;
+startDraw=1;
+endDraw=67;
 ticket=0x6a304dFdb9f808741244b6bfEe65ca7B3b3A6076;
 chainId=137;
 
