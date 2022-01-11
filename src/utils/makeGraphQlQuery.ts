@@ -16,12 +16,12 @@ export async function makeGraphQlQuery(
         const queryString = `{
             ticket(id: "${_ticket}") {
                 accounts(first: ${maxPageSize} , where: { 
-                    zeroBalanceOccurredAt: null,
+                    
                     id_gt: "${lastId}"
                     }) {
                     id
                     delegateBalance
-                    zeroBalanceOccurredAt
+                    
     
                     # get twab beforeOrAt drawStartTime
                     beforeOrAtDrawStartTime: twabs(
@@ -48,7 +48,6 @@ export async function makeGraphQlQuery(
                 }
             }
         }`;
-        console.log(`making query: ${queryString}`);
 
         let query = gql`
             ${queryString}
@@ -56,7 +55,6 @@ export async function makeGraphQlQuery(
 
         data = await request(subgraphURL, query);
         results.push(data.ticket.accounts);
-        console.log(`got ${data.ticket.accounts.length} more results`);
 
         const numberOfResults = data.ticket.accounts.length;
         if (numberOfResults < maxPageSize) {
