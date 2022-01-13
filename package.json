@@ -16,7 +16,7 @@
         "reinstall": "rm -rf node_modules && rm -rf dist/ && yarn",
         "start": "tsdx watch",
         "build": "tsdx build && cp -rf src/workers/* dist/workers",
-        "test": "tsdx test --bail",
+        "test": "tsdx test --bail=1",
         "lint": "tsdx lint",
         "prepare": "yarn build",
         "size": "size-limit",
