@@ -14,9 +14,10 @@ import { normalizeUserBalances } from "./utils/normalizeUserBalances";
 import { runCalculateDrawResultsWorker } from "./runCalculateDrawResultsWorker";
 import { PrizeDistribution, Draw } from "@pooltogether/draw-calculator-js";
 import { writeToOutput } from "./output/writeToOutput";
-import { parseAndWriteAddressesToOutput } from "./output/parseAndWriteAddressesToOutput";
+import { verifyParseAndWriteAddressesToOutput } from "./output/verifyParseAndWriteAddressesToOutput";
 import { hrtime } from "process";
 import { createOrUpdateStatus } from "./utils/createOrUpdateStatus";
+import { verifyAgainstSchema } from "./utils/verifyAgainstSchema";
 
 const debug = require("debug")("pt:draw-calculator-cli");
 
@@ -31,8 +32,6 @@ export async function run(chainId: string, ticket: string, drawId: string, outpu
     // lookup draw buffer address for network
     const drawBufferAddress = getDrawBufferAddress(chainId);
 
-    console.log(drawBufferAddress);
-
     // lookup PrizeDistrbution address for network
     const prizeDistributionBufferAddress = getPrizeDistributionBufferAddress(chainId); // refactor to use same code as getDrawBufferAddress
     // get PrizeDistribution for drawId
@@ -41,11 +40,11 @@ export async function run(chainId: string, ticket: string, drawId: string, outpu
         drawId,
         provider
     );
-    console.log(prizeDistribution);
+
     // get draw timestamp using drawId
     const draw: Draw = await getDrawFromDrawId(drawId, drawBufferAddress, provider);
     const drawTimestamp = (draw as any).timestamp;
-    console.log(draw);
+
     const drawStartTimestamp = drawTimestamp - (prizeDistribution as any).startTimestampOffset;
     const drawEndTimestamp = drawTimestamp - (prizeDistribution as any).endTimestampOffset;
     console.log("drawStartTimestamp:", drawStartTimestamp);
@@ -101,9 +100,17 @@ export async function run(chainId: string, ticket: string, drawId: string, outpu
     );
     debug(`draw calc workers returned: ${prizes.length} prizes`);
 
+    // verify all prizes data
+    if (!verifyAgainstSchema(prizes.flat(1))) {
+        throw new Error("prizes data is not valid");
+    }
+    debug(`verified all prizes data against schema`);
+
     // now write prizes to outputDir as JSON blob
     writeToOutput(outputDir, chainId, draw.drawId.toString(), "prizes", prizes.flat(1));
-    parseAndWriteAddressesToOutput(outputDir, chainId, draw.drawId.toString(), prizes);
+
+    // write each address data
+    verifyParseAndWriteAddressesToOutput(outputDir, chainId, draw.drawId.toString(), prizes);
 
     const elapsedSeconds = parseHrtimeToSeconds(hrtime(startTime));
     createOrUpdateStatus(outputDir, chainId, draw.drawId.toString(), elapsedSeconds);
