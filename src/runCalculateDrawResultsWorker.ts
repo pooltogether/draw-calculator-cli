@@ -1,6 +1,6 @@
 import { BigNumber } from "ethers";
 import Piscina from "piscina";
-import { Draw, PrizeDistribution } from "@pooltogether/draw-calculator-js";
+
 import { NormalizedUserBalance, Prize } from "./types";
 import { resolve } from "path";
 import { filterUndef } from "./utils/filterUndefinedValues";
@@ -9,8 +9,8 @@ const debug = require("debug")("pt:draw-calculator-cli");
 
 export async function runCalculateDrawResultsWorker(
     normalizedUserBalances: NormalizedUserBalance[],
-    prizeDistribution: PrizeDistribution,
-    draw: Draw
+    prizeDistribution: any,
+    draw: any
 ): Promise<Prize[][]> {
     const piscina = new Piscina({
         filename: resolve(__dirname, "../src/workers/calculatePrizeForUser.js"),

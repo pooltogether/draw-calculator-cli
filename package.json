@@ -16,14 +16,14 @@
         "reinstall": "rm -rf node_modules && rm -rf dist/ && yarn",
         "start": "tsdx watch",
         "build": "tsdx build && cp -rf src/workers/* dist/workers",
-        "test": "tsdx test",
+        "test": "tsdx test --bail=1",
         "lint": "tsdx lint",
         "prepare": "yarn build",
         "size": "size-limit",
         "analyze": "size-limit --why"
     },
     "dependencies": {
-        "@pooltogether/draw-calculator-js": "^1.0.3-beta.1",
+        "@pooltogether/v4-utils-js": "0.1.0-beta.1",
         "@pooltogether/v4-mainnet": "^1.1.0",
         "@pooltogether/v4-testnet": "^1.0.0-beta.12",
         "chalk": "^4.1.2",
