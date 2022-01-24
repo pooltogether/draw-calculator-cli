@@ -1,6 +1,11 @@
 {
     // see https://www.typescriptlang.org/tsconfig to better understand tsconfigs
     "include": ["src", "types"],
+    "typedocOptions": {
+        "entryPoints": ["./src/index.ts", "./src/run.ts", "./src/runCalculateDrawResultsWorker.ts"],
+        "out": "docs",
+        "readme": "README.md",
+    },
     "compilerOptions": {
         "module": "esnext",
         "lib": ["dom", "esnext"],
