@@ -1,7 +1,6 @@
 import { rmSync } from 'fs';
 import { resolve } from 'path';
 
-
 import { getPrizeDistributorAddress } from '../../src/getters/getPrizeDistributorAddress';
 import { run } from '../../src/run';
 import { getClaimTier } from '../helpers/getClaimTier';

@@ -9,5 +9,6 @@ describe('calculateNormalizedBalance()', () => {
             BigNumber.from(3000000000),
             BigNumber.from(ticketTotalSupply),
         );
+        console.log(normalizedBalance);
     });
 });
