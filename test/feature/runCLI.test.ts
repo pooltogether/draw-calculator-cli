@@ -1,7 +1,6 @@
 import { rmSync } from 'fs';
 import { resolve } from 'path';
 
-import { expect } from 'chai';
 
 import { getPrizeDistributorAddress } from '../../src/getters/getPrizeDistributorAddress';
 import { run } from '../../src/run';
@@ -33,7 +32,7 @@ describe('run CLI tool ()', () => {
         const prizesFilePath = resolvedDirPath + '/prizes.json';
         const results = require(prizesFilePath);
 
-        expect(results.length).to.be.gt(0);
+        expect(results.length).toBeGreaterThan(0);
 
         // check ten random results
         const randomMax = results.length;
@@ -51,7 +50,7 @@ describe('run CLI tool ()', () => {
                 exampleResult.tier,
             );
             i++;
-            expect(prizeTierResult.tier).to.equal(exampleResult.tier.toString());
+            expect(prizeTierResult.tier).toEqual(exampleResult.tier.toString());
         }
     });
 });
