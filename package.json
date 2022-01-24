@@ -1,16 +1,34 @@
 {
-    "version": "0.1.0-beta.17",
-    "license": "MIT",
+    "name": "@pooltogether/draw-calculator-cli",
+    "description": "Draw Calculator to compute User winning picks.",
+    "author": "PoolTogether Inc",
+    "license": "GPL-3.0-only",
+    "version": "0.1.0-beta.1",
+    "contributors": [
+        {
+        "name": "Kames Geraghty",
+        "email": "kames@pooltogether.com"
+        },
+        {
+        "name": "Aodhgan Gleeson",
+        "email": "aodhgan@pooltogether.com"
+        }
+    ],
+    "homepage": "https://github.com/pooltogether/v4-utils-js",
+    "bugs": {
+        "url": "https://github.com/pooltogether/issues",
+        "email": "bugs@pooltogether.com"
+    },
+    "engines": {
+        "node": ">=10"
+    },
+    "module": "dist/v4-utils-js.esm.js",
     "main": "dist/index.js",
-    "bin": "dist/index.js",
     "typings": "dist/index.d.ts",
     "files": [
         "dist",
         "src"
     ],
-    "engines": {
-        "node": ">=10"
-    },
     "scripts": {
         "clean": "rm -rf dist/",
         "reinstall": "rm -rf node_modules && rm -rf dist/ && yarn",
@@ -61,8 +79,5 @@
         "hooks": {
             "pre-commit": "tsdx lint"
         }
-    },
-    "name": "@pooltogether/draw-calculator-cli",
-    "author": "Aodhgan",
-    "module": "dist/draw-calculator-cli.esm.js"
+    }
 }
