@@ -13,7 +13,7 @@ describe('call the graph endpoint', () => {
             drawEndTimestamp,
         );
         const result = subgraphResult.some((account: any) => {
-            if (account.id == '0xd70804463bb2760c3384fc87bbe779e3d91bab3a') {
+            if (account.id === '0xd70804463bb2760c3384fc87bbe779e3d91bab3a') {
                 console.log('contains address');
                 console.log(JSON.stringify(account));
                 return true;

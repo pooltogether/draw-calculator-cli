@@ -1,6 +1,6 @@
-import { Contract } from "ethers";
-import PrizeDistributionBufferAbi from "@pooltogether/v4-core/abis/PrizeDistributionBuffer.json";
 import { Provider } from "@ethersproject/abstract-provider";
+import PrizeDistributionBufferAbi from "@pooltogether/v4-core/abis/PrizeDistributionBuffer.json";
+import { Contract } from "ethers";
 
 const debug = require("debug")("pt:draw-calculator-cli");
 

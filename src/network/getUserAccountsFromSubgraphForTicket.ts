@@ -1,9 +1,6 @@
-import { getSubgraphUrlForNetwork } from "./getSubgraphUrlForNetwork";
-import { request, gql } from "graphql-request";
 import { Account } from "../types";
 import { makeGraphQlQuery } from "../utils/makeGraphQlQuery";
-
-const debug = require("debug")("pt:draw-calculator-cli");
+import { getSubgraphUrlForNetwork } from "./getSubgraphUrlForNetwork";
 
 export async function getUserAccountsFromSubgraphForTicket(
     chainId: string,

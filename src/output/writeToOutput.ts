@@ -1,5 +1,7 @@
 import { writeFileSync, mkdirSync } from "fs";
+
 import { getPrizeDistributorAddress } from "../getters/getPrizeDistributorAddress";
+
 const debug = require("debug")("pt:draw-calculator-cli");
 
 export function writeToOutput(

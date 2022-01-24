@@ -1,10 +1,11 @@
-import { run } from '../../src/run';
-import { resolve } from 'path';
 import { rmSync } from 'fs';
-import { getClaimTier } from '../helpers/getClaimTier';
+import { resolve } from 'path';
 
 import { expect } from 'chai';
+
 import { getPrizeDistributorAddress } from '../../src/getters/getPrizeDistributorAddress';
+import { run } from '../../src/run';
+import { getClaimTier } from '../helpers/getClaimTier';
 
 describe('run CLI tool ()', () => {
     beforeEach(() => {

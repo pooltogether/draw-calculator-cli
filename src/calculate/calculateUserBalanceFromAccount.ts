@@ -1,4 +1,5 @@
 import { BigNumber } from "ethers";
+
 const debug = require("debug")("pt:draw-calculator-cli");
 
 export function calculateUserBalanceFromAccount(
@@ -31,12 +32,12 @@ export function calculateUserBalanceFromAccount(
             amount: BigNumber.from(sTwab.amount).add(
                 BigNumber.from(sTwab.delegateBalance).mul(drawStartTime - sTwab.timestamp)
             ),
-            timestamp: drawStartTime,
+            timestamp: drawStartTime
         };
     } else {
         drawStartTwab = {
             amount: BigNumber.from(0),
-            timestamp: drawStartTime,
+            timestamp: drawStartTime
         };
     }
 
@@ -44,7 +45,7 @@ export function calculateUserBalanceFromAccount(
         amount: BigNumber.from(eTwab.amount).add(
             BigNumber.from(eTwab.delegateBalance).mul(drawEndTime - eTwab.timestamp)
         ),
-        timestamp: drawEndTime,
+        timestamp: drawEndTime
     };
 
     const average: BigNumber = drawEndTwab.amount

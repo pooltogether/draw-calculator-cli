@@ -1,22 +1,24 @@
+import { hrtime } from "process";
+
+import { PrizeDistribution, Draw } from "@pooltogether/draw-calculator-js";
+import { BigNumber } from "ethers";
+
+import { calculateUserBalanceFromAccount } from "./calculate/calculateUserBalanceFromAccount";
 import { getDrawBufferAddress } from "./getters/getDrawBufferAddress";
-import { getDrawFromDrawId } from "./network/getDrawFromDrawId";
-import { getPrizeDistribution } from "./network/getPrizeDistribution";
 import { getPrizeDistributionBufferAddress } from "./getters/getPrizeDistributionAddress";
 import { getRpcProvider } from "./getters/getRpcProvider";
 import { getAverageTotalSuppliesFromTicket } from "./network/getAverageTotalSuppliesFromTicket";
+import { getDrawFromDrawId } from "./network/getDrawFromDrawId";
+import { getPrizeDistribution } from "./network/getPrizeDistribution";
 import { getUserAccountsFromSubgraphForTicket } from "./network/getUserAccountsFromSubgraphForTicket";
-import { validateInputs } from "./utils/validateInputs";
-import { Account, NormalizedUserBalance, Prize, UserBalance } from "./types";
-import { filterUndef } from "./utils/filterUndefinedValues";
-import { BigNumber } from "ethers";
-import { calculateUserBalanceFromAccount } from "./calculate/calculateUserBalanceFromAccount";
-import { normalizeUserBalances } from "./utils/normalizeUserBalances";
-import { runCalculateDrawResultsWorker } from "./runCalculateDrawResultsWorker";
-import { PrizeDistribution, Draw } from "@pooltogether/draw-calculator-js";
-import { writeToOutput } from "./output/writeToOutput";
 import { parseAndWriteAddressesToOutput } from "./output/parseAndWriteAddressesToOutput";
-import { hrtime } from "process";
+import { writeToOutput } from "./output/writeToOutput";
+import { runCalculateDrawResultsWorker } from "./runCalculateDrawResultsWorker";
+import { Account, NormalizedUserBalance, Prize, UserBalance } from "./types";
 import { createOrUpdateStatus } from "./utils/createOrUpdateStatus";
+import { filterUndef } from "./utils/filterUndefinedValues";
+import { normalizeUserBalances } from "./utils/normalizeUserBalances";
+import { validateInputs } from "./utils/validateInputs";
 
 const debug = require("debug")("pt:draw-calculator-cli");
 
@@ -31,8 +33,6 @@ export async function run(chainId: string, ticket: string, drawId: string, outpu
     // lookup draw buffer address for network
     const drawBufferAddress = getDrawBufferAddress(chainId);
 
-    console.log(drawBufferAddress);
-
     // lookup PrizeDistrbution address for network
     const prizeDistributionBufferAddress = getPrizeDistributionBufferAddress(chainId); // refactor to use same code as getDrawBufferAddress
     // get PrizeDistribution for drawId
@@ -41,15 +41,11 @@ export async function run(chainId: string, ticket: string, drawId: string, outpu
         drawId,
         provider
     );
-    console.log(prizeDistribution);
     // get draw timestamp using drawId
     const draw: Draw = await getDrawFromDrawId(drawId, drawBufferAddress, provider);
     const drawTimestamp = (draw as any).timestamp;
-    console.log(draw);
     const drawStartTimestamp = drawTimestamp - (prizeDistribution as any).startTimestampOffset;
     const drawEndTimestamp = drawTimestamp - (prizeDistribution as any).endTimestampOffset;
-    console.log("drawStartTimestamp:", drawStartTimestamp);
-    console.log("drawEndTimestamp:", drawEndTimestamp);
     // get accounts from subgraph for ticket and network
     const userAccounts: Account[] = await getUserAccountsFromSubgraphForTicket(
         chainId,
@@ -69,7 +65,7 @@ export async function run(chainId: string, ticket: string, drawId: string, outpu
         }
         return {
             balance,
-            address: account.id,
+            address: account.id
         };
     });
     debug("userBalances length ", userBalances.length);
