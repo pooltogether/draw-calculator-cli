@@ -1,7 +1,7 @@
 import { hrtime } from "process";
 
 import { PrizeDistribution, Draw } from "@pooltogether/draw-calculator-js";
-import { BigNumber } from "ethers";
+import { BigNumber } from "@ethersproject/bignumber";
 
 import { calculateUserBalanceFromAccount } from "./calculate/calculateUserBalanceFromAccount";
 import { getDrawBufferAddress } from "./getters/getDrawBufferAddress";
@@ -18,23 +18,16 @@ import { Account, NormalizedUserBalance, Prize, UserBalance } from "./types";
 import { createOrUpdateStatus } from "./utils/createOrUpdateStatus";
 import { filterUndef } from "./utils/filterUndefinedValues";
 import { normalizeUserBalances } from "./utils/normalizeUserBalances";
-import { validateInputs } from "./utils/validateInputs";
 
 const debug = require("debug")("pt:draw-calculator-cli");
 
 export async function run(chainId: string, ticket: string, drawId: string, outputDir: string) {
     debug(`Running Draw Calculator CLI tool..`);
     const startTime = hrtime();
-
-    // validate inputs
-    validateInputs(chainId, ticket, drawId, outputDir);
     const provider = getRpcProvider(chainId);
-
-    // lookup draw buffer address for network
     const drawBufferAddress = getDrawBufferAddress(chainId);
-
-    // lookup PrizeDistrbution address for network
-    const prizeDistributionBufferAddress = getPrizeDistributionBufferAddress(chainId); // refactor to use same code as getDrawBufferAddress
+    const prizeDistributionBufferAddress = getPrizeDistributionBufferAddress(chainId);
+    
     // get PrizeDistribution for drawId
     const prizeDistribution: PrizeDistribution = await getPrizeDistribution(
         prizeDistributionBufferAddress,
@@ -46,6 +39,7 @@ export async function run(chainId: string, ticket: string, drawId: string, outpu
     const drawTimestamp = (draw as any).timestamp;
     const drawStartTimestamp = drawTimestamp - (prizeDistribution as any).startTimestampOffset;
     const drawEndTimestamp = drawTimestamp - (prizeDistribution as any).endTimestampOffset;
+    
     // get accounts from subgraph for ticket and network
     const userAccounts: Account[] = await getUserAccountsFromSubgraphForTicket(
         chainId,
