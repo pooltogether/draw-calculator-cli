@@ -63,6 +63,7 @@ This tool can be run locally or in a cloud setting.
 ### Failure
 
 **Provider Failure**
+
 ```json
 {
   "status": "FAILURE",
@@ -101,6 +102,8 @@ This tool can be run locally or in a cloud setting.
   }
 }
 ```
+
+Catch on a per address thread basis an log in status.json
 
 ### Adding a new network
 
