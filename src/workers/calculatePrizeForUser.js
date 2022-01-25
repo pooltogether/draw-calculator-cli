@@ -10,7 +10,7 @@ module.exports = function calculatePrizeForUser({ user, prizeDistribution, draw 
 
     const _user = {
         address: user.address,
-        normalizedBalances: [user.balance],
+        normalizedBalances: [user.balance]
     };
     const _draw = draw;
 
@@ -31,7 +31,7 @@ module.exports = function calculatePrizeForUser({ user, prizeDistribution, draw 
     const prizesAwardable = results.prizes;
 
     const prizes = prizesAwardable
-        .map((prize) => {
+        .map(prize => {
             if (prize.amount.eq(BigNumber.from(0))) {
                 return undefined;
             }
@@ -39,10 +39,10 @@ module.exports = function calculatePrizeForUser({ user, prizeDistribution, draw 
                 address: user.address,
                 pick: prize.pick.toString(),
                 tier: prize.distributionIndex,
-                amount: prize.amount.toString(),
+                amount: prize.amount.toString()
             };
         })
-        .filter((prize) => prize !== undefined);
+        .filter(prize => prize !== undefined);
 
     // const nonZeroPrizes = prizes.filter((prize) => prize !== undefined);
 

@@ -3,7 +3,7 @@ import {
     POLYGON_TWAB_SUBGRAPH_URL,
     RINKEBY_TWAB_SUBGRAPH_URL,
     MUMBAI_TWAB_SUBGRAPH_URL,
-    AVALANCHE_TWAB_SUBGRAPH_URL,
+    AVALANCHE_TWAB_SUBGRAPH_URL
 } from "../constants";
 
 export function getSubgraphUrlForNetwork(chainId: string): string {

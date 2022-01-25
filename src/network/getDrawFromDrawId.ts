@@ -1,5 +1,5 @@
-import { Contract, providers } from "ethers";
 import DrawAbi from "@pooltogether/v4-core/abis/DrawBuffer.json";
+import { Contract, providers } from "ethers";
 
 export async function getDrawFromDrawId(
     drawId: string,

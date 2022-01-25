@@ -1,7 +1,9 @@
-const AJV = require('ajv');
 import * as schema from '@pooltogether/prize-api-schema/schema/prize.json';
-const testData = require('./data/prizes.json');
+
+const AJV = require('ajv');
+
 const invalidTestData = require('./data/invalidPrizes.json');
+const testData = require('./data/prizes.json');
 
 describe('validate data against schema', () => {
     it('data is valid', () => {

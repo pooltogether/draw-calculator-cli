@@ -1,6 +1,6 @@
-import { BigNumber, Contract } from "ethers";
-import TicketAbi from "@pooltogether/v4-core/abis/Ticket.json";
 import { Provider } from "@ethersproject/abstract-provider";
+import TicketAbi from "@pooltogether/v4-core/abis/Ticket.json";
+import { BigNumber, Contract } from "ethers";
 
 export async function getAverageTotalSuppliesFromTicket(
     ticketAddress: string,

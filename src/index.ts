@@ -1,7 +1,6 @@
 import { Command } from "commander";
-import { run } from "./run";
 
-const worker = require("./workers/calculatePrizeForUser");
+import { run } from "./run";
 
 async function index() {
     const program = new Command();

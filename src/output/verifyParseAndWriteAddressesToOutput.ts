@@ -2,8 +2,6 @@ import { Prize } from "../types";
 import { verifyAgainstSchema } from "../utils/verifyAgainstSchema";
 import { writeToOutput } from "./writeToOutput";
 
-const debug = require("debug")("pt:draw-calculator-cli");
-
 export function verifyParseAndWriteAddressesToOutput(
     outDir: string,
     network: string,
