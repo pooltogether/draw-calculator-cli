@@ -48,6 +48,7 @@ export async function run(chainId: string, ticket: string, drawId: string, outpu
         drawStartTimestamp,
         drawEndTimestamp
     );
+    
     // calculate user balances from twabs
     const userBalances: any[] = userAccounts.map((account: Account) => {
         const balance = calculateUserBalanceFromAccount(

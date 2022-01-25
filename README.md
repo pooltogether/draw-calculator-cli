@@ -40,6 +40,70 @@ alongside a `<address>.json` of similar structure for each winning address.
 
 This tool can be run locally or in a cloud setting.
 
+## Status File (status.json)
+
+```json
+{
+  "status": "RUNNING",
+  "createdAt": "11"
+}
+```
+
+### Success
+
+```json
+{
+  "status": "SUCCESS",
+  "runtime": "20.00",
+  "length": "137",
+  "totalAmount": "500000000",
+  "createdAt": 11,
+  "updatedAt": 222,
+}
+```
+
+### Failure
+
+**Provider Failure**
+```json
+{
+  "status": "FAILURE",
+  "createdAt": 11,
+  "updatedAt": 222,
+  "error": {
+    "code": "1",
+    "msg": "provider-timeout"
+  }
+}
+```
+
+**Subgraph Failure**
+```json
+{
+  "status": "FAILURE",
+  "createdAt": 11,
+  "updatedAt": 222,
+  "error": {
+    "code": "2",
+    "msg": "subgraph-timeout"
+  }
+}
+```
+
+**Unexpected Failure**
+
+```json
+{
+  "status": "FAILURE",
+  "createdAt": 11,
+  "updatedAt": 222,
+  "error": {
+    "code": "3",
+    "msg": "unexpected-error"
+  }
+}
+```
+
 ### Adding a new network
 
 1. Create a (new subgraph)[https://github.com/pooltogether/twab-subgraph] for the network.
