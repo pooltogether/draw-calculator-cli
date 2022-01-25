@@ -55,8 +55,6 @@ This tool can be run locally or in a cloud setting.
 {
   "status": "SUCCESS",
   "runtime": "20.00",
-  "length": "137",
-  "totalAmount": "500000000",
   "createdAt": 11,
   "updatedAt": 222,
 }
