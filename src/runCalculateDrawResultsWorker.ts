@@ -1,8 +1,9 @@
-import { BigNumber } from "ethers";
-import Piscina from "piscina";
-import { Draw, PrizeDistribution } from "@pooltogether/draw-calculator-js";
-import { NormalizedUserBalance, Prize } from "./types";
 import { resolve } from "path";
+
+import { Draw, PrizeDistribution } from "@pooltogether/draw-calculator-js";
+import Piscina from "piscina";
+
+import { NormalizedUserBalance, Prize } from "./types";
 import { filterUndef } from "./utils/filterUndefinedValues";
 
 const debug = require("debug")("pt:draw-calculator-cli");
@@ -13,7 +14,7 @@ export async function runCalculateDrawResultsWorker(
     draw: Draw
 ): Promise<Prize[][]> {
     const piscina = new Piscina({
-        filename: resolve(__dirname, "../src/workers/calculatePrizeForUser.js"),
+        filename: resolve(__dirname, "../src/workers/calculatePrizeForUser.js")
     });
 
     let prizes = await Promise.all(
@@ -27,29 +28,29 @@ export async function runCalculateDrawResultsWorker(
             // serialize the data as strings
             const user = {
                 address: userBalance.address,
-                balance: userBalance.normalizedBalance.toString(),
+                balance: userBalance.normalizedBalance.toString()
             };
             const _prizeDistribution = {
                 ...prizeDistribution,
                 numberOfPicks: prizeDistribution.numberOfPicks.toString(),
                 bitRangeSize: prizeDistribution.bitRangeSize,
-                prize: prizeDistribution.prize.toString(),
+                prize: prizeDistribution.prize.toString()
             };
             const _draw = {
                 ...draw,
-                winningRandomNumber: draw.winningRandomNumber.toString(),
+                winningRandomNumber: draw.winningRandomNumber.toString()
             };
             const workerArgs = {
                 user,
                 prizeDistribution: _prizeDistribution,
-                draw: _draw,
+                draw: _draw
             };
 
             return await piscina.run(workerArgs);
         })
     );
     // remove empty arrays and zero value prizes
-    prizes = prizes.filter((prize) => {
+    prizes = prizes.filter(prize => {
         if (!prize) {
             return false;
         }

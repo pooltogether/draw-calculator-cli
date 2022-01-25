@@ -1,7 +1,8 @@
-import { BigNumber, Contract } from "ethers";
-import { getRpcProvider } from "../../src/getters/getRpcProvider";
 import DrawCalc from "@pooltogether/v4-mainnet/deployments/mainnet/DrawCalculator.json";
+import { BigNumber, Contract } from "ethers";
 import { utils } from "ethers";
+
+import { getRpcProvider } from "../../src/getters/getRpcProvider";
 
 const encoder = utils.defaultAbiCoder;
 
@@ -35,7 +36,7 @@ export async function getClaimTier(
 
     return {
         tier: extractTierFromPrizeCounts(prizeCounts, expectedTier),
-        amount: calculateResult[0],
+        amount: calculateResult[0]
     };
 }
 

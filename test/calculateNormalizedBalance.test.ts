@@ -1,4 +1,5 @@
 import { BigNumber } from 'ethers';
+
 import { calculateNormalizedBalance } from '../src/calculate/calculateNormalizedBalance';
 
 describe('calculateNormalizedBalance()', () => {

@@ -1,8 +1,6 @@
 import { Prize } from "../types";
 import { writeToOutput } from "./writeToOutput";
 
-const debug = require("debug")("pt:draw-calculator-cli");
-
 export function parseAndWriteAddressesToOutput(
     outDir: string,
     network: string,

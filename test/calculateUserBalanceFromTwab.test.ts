@@ -1,6 +1,7 @@
 import { BigNumber } from 'ethers';
-import { Account } from '../src/types';
+
 import { calculateUserBalanceFromAccount } from '../src/calculate/calculateUserBalanceFromAccount';
+import { Account } from '../src/types';
 
 describe('calculateUserBalanceFromAccount()', () => {
     it('returns undefined when twabs are undefined', () => {

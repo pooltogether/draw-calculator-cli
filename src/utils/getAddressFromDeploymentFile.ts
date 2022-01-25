@@ -3,19 +3,19 @@ import { readFileSync } from "fs";
 export function getAddressFromDeploymentFile(chainId: string, contractName: string): string {
     let mainnetOrTestnet;
     let networkName;
-    if (chainId == "1") {
+    if (chainId === "1") {
         mainnetOrTestnet = "v4-mainnet";
         networkName = "mainnet";
-    } else if (chainId == "137") {
+    } else if (chainId === "137") {
         mainnetOrTestnet = "v4-mainnet";
         networkName = "polygon";
-    } else if (chainId == "4") {
+    } else if (chainId === "4") {
         mainnetOrTestnet = "v4-testnet";
         networkName = "rinkeby";
-    } else if (chainId == "80001") {
+    } else if (chainId === "80001") {
         mainnetOrTestnet = "v4-testnet";
         networkName = "mumbai";
-    } else if (chainId == "43114") {
+    } else if (chainId === "43114") {
         mainnetOrTestnet = "v4-mainnet";
         networkName = "avalanche";
     } else {

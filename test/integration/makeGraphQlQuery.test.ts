@@ -1,17 +1,12 @@
-import { makeGraphQlQuery } from '../../src/utils/makeGraphQlQuery';
 import { AVALANCHE_TWAB_SUBGRAPH_URL, POLYGON_TWAB_SUBGRAPH_URL } from '../../src/constants';
+import { makeGraphQlQuery } from '../../src/utils/makeGraphQlQuery';
 
 describe('make a graphql request', () => {
     it('test max results polygon', async () => {
         const _ticket = '0x6a304dfdb9f808741244b6bfee65ca7b3b3a6076';
         const drawStartTime = 1640286968;
         const drawEndTime = 1640372468;
-        const result = await makeGraphQlQuery(
-            POLYGON_TWAB_SUBGRAPH_URL,
-            _ticket,
-            drawStartTime,
-            drawEndTime,
-        );
+        await makeGraphQlQuery(POLYGON_TWAB_SUBGRAPH_URL, _ticket, drawStartTime, drawEndTime);
     });
     it('polygon draw 1', async () => {
         const _ticket = '0x6a304dfdb9f808741244b6bfee65ca7b3b3a6076';
@@ -27,7 +22,7 @@ describe('make a graphql request', () => {
         let chosenAccount;
 
         result.forEach((account: any) => {
-            if (account.id == '0x001123f9ed1f3fc7cf265888a37fdb9df0397462') {
+            if (account.id === '0x001123f9ed1f3fc7cf265888a37fdb9df0397462') {
                 console.log(account);
                 chosenAccount = account;
             }
@@ -48,7 +43,7 @@ describe('make a graphql request', () => {
         let chosenAccount;
 
         result.forEach((account: any) => {
-            if (account.id == '0xf33e9f0f34601f76aac9eafeb5dfb8ba4fda88ac') {
+            if (account.id === '0xf33e9f0f34601f76aac9eafeb5dfb8ba4fda88ac') {
                 console.log(account);
                 chosenAccount = account;
             }
