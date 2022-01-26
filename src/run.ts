@@ -15,6 +15,7 @@ import { verifyParseAndWriteAddressesToOutput } from "./output/verifyParseAndWri
 import { writeToOutput } from "./output/writeToOutput";
 import { runCalculateDrawResultsWorker } from "./runCalculateDrawResultsWorker";
 import { Account, NormalizedUserBalance, Prize, UserBalance } from "./types";
+import { createStatus, writeStatus, updateStatusSuccess, updateStatusFailure } from "./utils";
 import { createOrUpdateStatus } from "./utils/createOrUpdateStatus";
 import { filterUndef } from "./utils/filterUndefinedValues";
 import { normalizeUserBalances } from "./utils/normalizeUserBalances";
@@ -23,6 +24,10 @@ import { verifyAgainstSchema } from "./utils/verifyAgainstSchema";
 const debug = require("debug")("pt:draw-calculator-cli");
 
 export async function run(chainId: string, ticket: string, drawId: string, outputDir: string) {
+    // Initialize the status.json file with the status and the current time. 
+    const statusLoading = createStatus();
+    writeStatus(outputDir, chainId, drawId, statusLoading);
+
     debug(`Running Draw Calculator CLI tool..`);
     const startTime = hrtime();
     const provider = getRpcProvider(chainId);
@@ -35,6 +40,7 @@ export async function run(chainId: string, ticket: string, drawId: string, outpu
         drawId,
         provider
     );
+
     // get draw timestamp using drawId
     const draw: Draw = await getDrawFromDrawId(drawId, drawBufferAddress, provider);
     const drawTimestamp = (draw as any).timestamp;
@@ -48,7 +54,7 @@ export async function run(chainId: string, ticket: string, drawId: string, outpu
         drawStartTimestamp,
         drawEndTimestamp
     );
-    
+
     // calculate user balances from twabs
     const userBalances: any[] = userAccounts.map((account: Account) => {
         const balance = calculateUserBalanceFromAccount(
@@ -78,7 +84,6 @@ export async function run(chainId: string, ticket: string, drawId: string, outpu
         provider
     );
     debug(`got total ticket supply ${ticketTotalSupplies[0]}`);
-    debug(`normalizing balances..`);
     const normalizedUserBalances: NormalizedUserBalance[] = normalizeUserBalances(
         filteredUserBalances,
         ticketTotalSupplies[0]
@@ -105,9 +110,12 @@ export async function run(chainId: string, ticket: string, drawId: string, outpu
     // write each address data
     verifyParseAndWriteAddressesToOutput(outputDir, chainId, draw.drawId.toString(), prizes);
 
-    const elapsedSeconds = parseHrtimeToSeconds(hrtime(startTime));
-    createOrUpdateStatus(outputDir, chainId, draw.drawId.toString(), elapsedSeconds);
-    debug(`exiting program`);
+    // Update the status.json file with the status and the current time.
+    const statusSuccess = updateStatusSuccess(statusLoading.createdAt, {
+        prizeLength: prizes.length,
+        amountsTotal: prizes.flat(1).map((prize: Prize) => prize.amount).reduce((a, b) => a.add(b)),
+    });
+    writeStatus(outputDir, chainId, drawId, statusSuccess);
 }
 
 function parseHrtimeToSeconds(hrtime: number[]) {
