@@ -54,9 +54,13 @@ This tool can be run locally or in a cloud setting.
 ```json
 {
   "status": "SUCCESS",
-  "runtime": "20.00",
-  "createdAt": 11,
-  "updatedAt": 222,
+  "createdAt": "11",
+  "updatedAt": "33",
+  "runtime": "22",
+  "meta": {
+    "prizeLength": "10",
+    "amountsTotal": "5000000"
+  }
 }
 ```
 
@@ -67,11 +71,12 @@ This tool can be run locally or in a cloud setting.
 ```json
 {
   "status": "FAILURE",
-  "createdAt": 11,
-  "updatedAt": 222,
+  "createdAt": "11",
+  "updatedAt": "33",
+  "runtime": "22",
   "error": {
     "code": "1",
-    "msg": "provider-timeout"
+    "msg": "provider-error"
   }
 }
 ```
@@ -84,7 +89,7 @@ This tool can be run locally or in a cloud setting.
   "updatedAt": 222,
   "error": {
     "code": "2",
-    "msg": "subgraph-timeout"
+    "msg": "subgraph-error"
   }
 }
 ```
@@ -99,6 +104,20 @@ This tool can be run locally or in a cloud setting.
   "error": {
     "code": "3",
     "msg": "unexpected-error"
+  }
+}
+```
+
+**Invalid Prize Schema Failure**
+
+```json
+{
+  "status": "FAILURE",
+  "createdAt": 11,
+  "updatedAt": 222,
+  "error": {
+    "code": "4",
+    "msg": "invalid-prize-schema"
   }
 }
 ```

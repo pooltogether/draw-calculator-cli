@@ -9,10 +9,13 @@ import { filterUndef } from "./utils/filterUndefinedValues";
 const debug = require("debug")("pt:draw-calculator-cli");
 
 export async function runCalculateDrawResultsWorker(
-    normalizedUserBalances: NormalizedUserBalance[],
-    prizeDistribution: PrizeDistribution,
-    draw: Draw
+    normalizedUserBalances?: NormalizedUserBalance[],
+    prizeDistribution?: PrizeDistribution,
+    draw?: Draw
 ): Promise<Prize[][]> {
+    if (!normalizedUserBalances || !prizeDistribution || !draw) {
+        throw new Error(`Invalid input parameters`);
+    }
     const piscina = new Piscina({
         filename: resolve(__dirname, "../src/workers/calculatePrizeForUser.js")
     });
