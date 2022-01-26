@@ -1,5 +1,3 @@
-import { hrtime } from "process";
-
 import { BigNumber } from "@ethersproject/bignumber";
 import { PrizeDistribution, Draw } from "@pooltogether/draw-calculator-js";
 
