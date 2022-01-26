@@ -52,9 +52,7 @@ export async function run(chainId: string, ticket: string, drawId: string, outpu
             provider
         );
         draw = await getDrawFromDrawId(drawId, drawBufferAddress, provider);
-        if (!draw || !prizeDistribution)
-            throw new Error(`Could not find draw or prize distribution for drawId: ${drawId}`);
-        const drawTimestamp = draw.timestamp;
+        const drawTimestamp = draw?.timestamp;
         // @ts-ignore
         drawStartTimestamp = drawTimestamp - prizeDistribution.startTimestampOffset;
         // @ts-ignore
