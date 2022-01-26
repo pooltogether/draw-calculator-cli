@@ -85,8 +85,9 @@ This tool can be run locally or in a cloud setting.
 ```json
 {
   "status": "FAILURE",
-  "createdAt": 11,
-  "updatedAt": 222,
+  "createdAt": "11",
+  "updatedAt": "33",
+  "runtime": "22",
   "error": {
     "code": "2",
     "msg": "subgraph-error"
@@ -99,8 +100,9 @@ This tool can be run locally or in a cloud setting.
 ```json
 {
   "status": "FAILURE",
-  "createdAt": 11,
-  "updatedAt": 222,
+  "createdAt": "11",
+  "updatedAt": "33",
+  "runtime": "22",
   "error": {
     "code": "3",
     "msg": "unexpected-error"
@@ -113,8 +115,9 @@ This tool can be run locally or in a cloud setting.
 ```json
 {
   "status": "FAILURE",
-  "createdAt": 11,
-  "updatedAt": 222,
+  "createdAt": "11",
+  "updatedAt": "33",
+  "runtime": "22",
   "error": {
     "code": "4",
     "msg": "invalid-prize-schema"
