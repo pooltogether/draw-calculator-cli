@@ -13,7 +13,13 @@ import { verifyParseAndWriteAddressesToOutput } from "./output/verifyParseAndWri
 import { writeToOutput } from "./output/writeToOutput";
 import { runCalculateDrawResultsWorker } from "./runCalculateDrawResultsWorker";
 import { Account, NormalizedUserBalance, Prize, UserBalance } from "./types";
-import { createStatus, writeStatus, updateStatusSuccess, updateStatusFailure, sumPrizeAmounts } from "./utils";
+import {
+    createStatus,
+    writeStatus,
+    updateStatusSuccess,
+    updateStatusFailure,
+    sumPrizeAmounts
+} from "./utils";
 import { filterUndef } from "./utils/filterUndefinedValues";
 import { normalizeUserBalances } from "./utils/normalizeUserBalances";
 import { verifyAgainstSchema } from "./utils/verifyAgainstSchema";
