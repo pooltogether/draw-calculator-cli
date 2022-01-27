@@ -125,8 +125,6 @@ This tool can be run locally or in a cloud setting.
 }
 ```
 
-Catch on a per address thread basis an log in status.json
-
 ### Adding a new network
 
 1. Create a (new subgraph)[https://github.com/pooltogether/twab-subgraph] for the network.

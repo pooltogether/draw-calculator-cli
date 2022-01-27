@@ -20,7 +20,7 @@ import { verifyAgainstSchema } from "./utils/verifyAgainstSchema";
 
 const debug = require("debug")("pt:draw-calculator-cli");
 
-function sumAmounts(list: Array<any>) {
+function sumAmounts(list: Array<Prize>) {
     return list
         .flat(1)
         .map((prize: Prize) => prize.amount)
