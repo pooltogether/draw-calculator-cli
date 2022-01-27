@@ -1,6 +1,6 @@
 import { readFileSync } from "fs";
 
-export function getAddressFromDeploymentFile(chainId: string, contractName: string): string {
+function getAddressFromDeploymentFile(chainId: string, contractName: string): string {
     let mainnetOrTestnet;
     let networkName;
     if (chainId === "1") {
@@ -28,3 +28,5 @@ export function getAddressFromDeploymentFile(chainId: string, contractName: stri
 
     return JSON.parse(readFileSync(path, { encoding: "utf-8" })).address.toLowerCase();
 }
+
+export default getAddressFromDeploymentFile;

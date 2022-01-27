@@ -8,3 +8,5 @@ export function createOrUpdateStatus(
 ) {
     writeToOutput(outputDir, network, drawId, "status", { cliStatus: "ok", cliRunTime: runTime });
 }
+
+export default createOrUpdateStatus;

@@ -40,6 +40,91 @@ alongside a `<address>.json` of similar structure for each winning address.
 
 This tool can be run locally or in a cloud setting.
 
+## Status File (status.json)
+
+```json
+{
+  "status": "RUNNING",
+  "createdAt": "11"
+}
+```
+
+### Success
+
+```json
+{
+  "status": "SUCCESS",
+  "createdAt": "11",
+  "updatedAt": "33",
+  "runtime": "22",
+  "meta": {
+    "prizeLength": "10",
+    "amountsTotal": "5000000"
+  }
+}
+```
+
+### Failure
+
+**Provider Failure**
+
+```json
+{
+  "status": "FAILURE",
+  "createdAt": "11",
+  "updatedAt": "33",
+  "runtime": "22",
+  "error": {
+    "code": "1",
+    "msg": "provider-error"
+  }
+}
+```
+
+**Subgraph Failure**
+```json
+{
+  "status": "FAILURE",
+  "createdAt": "11",
+  "updatedAt": "33",
+  "runtime": "22",
+  "error": {
+    "code": "2",
+    "msg": "subgraph-error"
+  }
+}
+```
+
+**Unexpected Failure**
+
+```json
+{
+  "status": "FAILURE",
+  "createdAt": "11",
+  "updatedAt": "33",
+  "runtime": "22",
+  "error": {
+    "code": "3",
+    "msg": "unexpected-error"
+  }
+}
+```
+
+**Invalid Prize Schema Failure**
+
+```json
+{
+  "status": "FAILURE",
+  "createdAt": "11",
+  "updatedAt": "33",
+  "runtime": "22",
+  "error": {
+    "code": "4",
+    "msg": "invalid-prize-schema"
+  }
+}
+```
+
 ### Adding a new network
 
 1. Create a (new subgraph)[https://github.com/pooltogether/twab-subgraph] for the network.

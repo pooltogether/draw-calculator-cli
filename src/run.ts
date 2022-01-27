@@ -1,5 +1,3 @@
-import { hrtime } from "process";
-
 import { BigNumber } from "@ethersproject/bignumber";
 import { PrizeDistribution, Draw } from "@pooltogether/draw-calculator-js";
 
@@ -15,7 +13,13 @@ import { verifyParseAndWriteAddressesToOutput } from "./output/verifyParseAndWri
 import { writeToOutput } from "./output/writeToOutput";
 import { runCalculateDrawResultsWorker } from "./runCalculateDrawResultsWorker";
 import { Account, NormalizedUserBalance, Prize, UserBalance } from "./types";
-import { createOrUpdateStatus } from "./utils/createOrUpdateStatus";
+import {
+    createStatus,
+    writeStatus,
+    updateStatusSuccess,
+    updateStatusFailure,
+    sumPrizeAmounts
+} from "./utils";
 import { filterUndef } from "./utils/filterUndefinedValues";
 import { normalizeUserBalances } from "./utils/normalizeUserBalances";
 import { verifyAgainstSchema } from "./utils/verifyAgainstSchema";
@@ -23,32 +27,77 @@ import { verifyAgainstSchema } from "./utils/verifyAgainstSchema";
 const debug = require("debug")("pt:draw-calculator-cli");
 
 export async function run(chainId: string, ticket: string, drawId: string, outputDir: string) {
+    // Initialize the status.json file with the status and the current time in epoch miliseconds.
+    const statusLoading = createStatus();
+    writeStatus(outputDir, chainId, drawId, statusLoading);
+
     debug(`Running Draw Calculator CLI tool..`);
-    const startTime = hrtime();
     const provider = getRpcProvider(chainId);
     const drawBufferAddress = getDrawBufferAddress(chainId);
     const prizeDistributionBufferAddress = getPrizeDistributionBufferAddress(chainId);
 
-    // get PrizeDistribution for drawId
-    const prizeDistribution: PrizeDistribution = await getPrizeDistribution(
-        prizeDistributionBufferAddress,
-        drawId,
-        provider
-    );
-    // get draw timestamp using drawId
-    const draw: Draw = await getDrawFromDrawId(drawId, drawBufferAddress, provider);
-    const drawTimestamp = (draw as any).timestamp;
-    const drawStartTimestamp = drawTimestamp - (prizeDistribution as any).startTimestampOffset;
-    const drawEndTimestamp = drawTimestamp - (prizeDistribution as any).endTimestampOffset;
+    /* -------------------------------------------------- */
+    // JsonRpcProvider Fetching
+    /* -------------------------------------------------- */
+    let draw: Draw | undefined = undefined;
+    let prizeDistribution: PrizeDistribution | undefined = undefined;
+    let drawStartTimestamp = 0;
+    let drawEndTimestamp = 0;
+    try {
+        prizeDistribution = await getPrizeDistribution(
+            prizeDistributionBufferAddress,
+            drawId,
+            provider
+        );
+        draw = await getDrawFromDrawId(drawId, drawBufferAddress, provider);
+        const drawTimestamp = draw?.timestamp;
+        // @ts-ignore
+        drawStartTimestamp = drawTimestamp - prizeDistribution.startTimestampOffset;
+        // @ts-ignore
+        drawEndTimestamp = drawTimestamp - prizeDistribution.endTimestampOffset;
+    } catch (error) {
+        const statusFailure = updateStatusFailure(statusLoading.createdAt, {
+            code: 1,
+            msg: "provider-error"
+        });
+        writeStatus(outputDir, chainId, drawId, statusFailure);
+    }
 
-    // get accounts from subgraph for ticket and network
-    const userAccounts: Account[] = await getUserAccountsFromSubgraphForTicket(
-        chainId,
-        ticket,
-        drawStartTimestamp,
-        drawEndTimestamp
-    );
-    // calculate user balances from twabs
+    /* -------------------------------------------------- */
+    // Subgraph Fetching
+    /* -------------------------------------------------- */
+    let userAccounts: Account[] = [];
+    try {
+        userAccounts = await getUserAccountsFromSubgraphForTicket(
+            chainId,
+            ticket,
+            drawStartTimestamp,
+            drawEndTimestamp
+        );
+    } catch (error) {
+        const statusFailure = updateStatusFailure(statusLoading.createdAt, {
+            code: 2,
+            msg: "subgraph-error"
+        });
+        writeStatus(outputDir, chainId, drawId, statusFailure);
+    }
+
+    /* -------------------------------------------------- */
+    // Unexpected Error
+    /* -------------------------------------------------- */
+    // @TODO validate more inputs?
+    if (!draw || !prizeDistribution || !userAccounts) {
+        const statusFailure = updateStatusFailure(statusLoading.createdAt, {
+            code: 3,
+            msg: "unexpected-error"
+        });
+        writeStatus(outputDir, chainId, drawId, statusFailure);
+        throw new Error(`Unexpected Error`);
+    }
+
+    /* -------------------------------------------------- */
+    // Computation
+    /* -------------------------------------------------- */
     const userBalances: any[] = userAccounts.map((account: Account) => {
         const balance = calculateUserBalanceFromAccount(
             account,
@@ -63,52 +112,43 @@ export async function run(chainId: string, ticket: string, drawId: string, outpu
             address: account.id
         };
     });
-    debug("userBalances length ", userBalances.length);
-
-    // filter out undefined balances
     const filteredUserBalances: UserBalance[] = filterUndef<UserBalance>(userBalances);
-    debug("filteredUserBalances length ", filteredUserBalances.length);
-
-    // normalize - getAverageTotalSuppliesFromTicket and normalize (div) with this value
     const ticketTotalSupplies: BigNumber[] = await getAverageTotalSuppliesFromTicket(
         ticket,
         drawStartTimestamp,
         drawEndTimestamp,
         provider
     );
-    debug(`got total ticket supply ${ticketTotalSupplies[0]}`);
-    debug(`normalizing balances..`);
     const normalizedUserBalances: NormalizedUserBalance[] = normalizeUserBalances(
         filteredUserBalances,
         ticketTotalSupplies[0]
     );
-
-    // run worker for each userBalance
-    debug(`running draw calculator workers..`);
     const prizes: Prize[][] = await runCalculateDrawResultsWorker(
         normalizedUserBalances,
         prizeDistribution,
         draw
     );
-    debug(`draw calc workers returned: ${prizes.length} prizes`);
-
-    // verify all prizes data
+    /* -------------------------------------------------- */
+    // Invalid Data (Schema)
+    // @dev Should not happen, but just in case.
+    /* -------------------------------------------------- */
     if (!verifyAgainstSchema(prizes.flat(1))) {
-        throw new Error("prizes data is not valid");
+        const statusFailure = updateStatusFailure(statusLoading.createdAt, {
+            code: 4,
+            msg: "invalid-prize-schema"
+        });
+        writeStatus(outputDir, chainId, drawId, statusFailure);
+        throw new Error(`Invalid Prize Schema`);
     }
-    debug(`verified all prizes data against schema`);
 
-    // now write prizes to outputDir as JSON blob
+    /* -------------------------------------------------- */
+    // Write (Flat File Database Schema)
+    /* -------------------------------------------------- */
     writeToOutput(outputDir, chainId, draw.drawId.toString(), "prizes", prizes.flat(1));
-
-    // write each address data
     verifyParseAndWriteAddressesToOutput(outputDir, chainId, draw.drawId.toString(), prizes);
-
-    const elapsedSeconds = parseHrtimeToSeconds(hrtime(startTime));
-    createOrUpdateStatus(outputDir, chainId, draw.drawId.toString(), elapsedSeconds);
-    debug(`exiting program`);
-}
-
-function parseHrtimeToSeconds(hrtime: number[]) {
-    return (hrtime[0] + hrtime[1] / 1e9).toFixed(3);
+    const statusSuccess = updateStatusSuccess(statusLoading.createdAt, {
+        prizeLength: prizes.length,
+        amountsTotal: sumPrizeAmounts(prizes)
+    });
+    writeStatus(outputDir, chainId, drawId, statusSuccess);
 }
