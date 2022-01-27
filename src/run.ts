@@ -13,20 +13,12 @@ import { verifyParseAndWriteAddressesToOutput } from "./output/verifyParseAndWri
 import { writeToOutput } from "./output/writeToOutput";
 import { runCalculateDrawResultsWorker } from "./runCalculateDrawResultsWorker";
 import { Account, NormalizedUserBalance, Prize, UserBalance } from "./types";
-import { createStatus, writeStatus, updateStatusSuccess, updateStatusFailure } from "./utils";
+import { createStatus, writeStatus, updateStatusSuccess, updateStatusFailure, sumPrizeAmounts } from "./utils";
 import { filterUndef } from "./utils/filterUndefinedValues";
 import { normalizeUserBalances } from "./utils/normalizeUserBalances";
 import { verifyAgainstSchema } from "./utils/verifyAgainstSchema";
 
 const debug = require("debug")("pt:draw-calculator-cli");
-
-function sumAmounts(list: Array<Prize>) {
-    return list
-        .flat(1)
-        .map((prize: Prize) => prize.amount)
-        .reduce((a, b) => a.add(b), BigNumber.from(0))
-        .toString();
-}
 
 export async function run(chainId: string, ticket: string, drawId: string, outputDir: string) {
     // Initialize the status.json file with the status and the current time in epoch miliseconds.
@@ -150,7 +142,7 @@ export async function run(chainId: string, ticket: string, drawId: string, outpu
     verifyParseAndWriteAddressesToOutput(outputDir, chainId, draw.drawId.toString(), prizes);
     const statusSuccess = updateStatusSuccess(statusLoading.createdAt, {
         prizeLength: prizes.length,
-        amountsTotal: sumAmounts(prizes)
+        amountsTotal: sumPrizeAmounts(prizes)
     });
     writeStatus(outputDir, chainId, drawId, statusSuccess);
 }
