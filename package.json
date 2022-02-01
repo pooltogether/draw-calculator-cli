@@ -14,15 +14,15 @@
             "email": "aodhgan@pooltogether.com"
         }
     ],
-    "homepage": "https://github.com/pooltogether/v4-utils-js",
+    "homepage": "https://github.com/pooltogether/draw-calculator-cli",
     "bugs": {
-        "url": "https://github.com/pooltogether/issues",
+        "url": "https://github.com/pooltogether/draw-calculator-cli/issues",
         "email": "bugs@pooltogether.com"
     },
     "engines": {
         "node": ">=10"
     },
-    "module": "dist/v4-utils-js.esm.js",
+    "module": "dist/draw-calculator-cli.esm.js",
     "main": "dist/index.js",
     "typings": "dist/index.d.ts",
     "files": [

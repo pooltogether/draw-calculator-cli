@@ -25,17 +25,9 @@ import { filterUndef } from "./utils/filterUndefinedValues";
 import { normalizeUserBalances } from "./utils/normalizeUserBalances";
 import { verifyAgainstSchema } from "./utils/verifyAgainstSchema";
 
-const debug = require("debug")("pt:draw-calculator-cli");
-
 export async function run(chainId: string, ticket: string, drawId: string, outputDir: string) {
-    // Initialize the status.json file with the status and the current time in epoch miliseconds.
     const statusLoading = createStatus();
     writeStatus(outputDir, chainId, drawId, statusLoading);
-
-    debug(`Running Draw Calculator CLI tool..`);
-    const provider = getRpcProvider(chainId);
-    const drawBufferAddress = getDrawBufferAddress(chainId);
-    const prizeDistributionBufferAddress = getPrizeDistributionBufferAddress(chainId);
 
     /* -------------------------------------------------- */
     // JsonRpcProvider Fetching
@@ -44,6 +36,10 @@ export async function run(chainId: string, ticket: string, drawId: string, outpu
     let prizeDistribution: PrizeDistribution | undefined = undefined;
     let drawStartTimestamp = 0;
     let drawEndTimestamp = 0;
+   
+    const provider = getRpcProvider(chainId);
+    const drawBufferAddress = getDrawBufferAddress(chainId);
+    const prizeDistributionBufferAddress = getPrizeDistributionBufferAddress(chainId);
     try {
         prizeDistribution = await getPrizeDistribution(
             prizeDistributionBufferAddress,
