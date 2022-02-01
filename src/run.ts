@@ -36,7 +36,7 @@ export async function run(chainId: string, ticket: string, drawId: string, outpu
     let prizeDistribution: PrizeDistribution | undefined = undefined;
     let drawStartTimestamp = 0;
     let drawEndTimestamp = 0;
-   
+
     const provider = getRpcProvider(chainId);
     const drawBufferAddress = getDrawBufferAddress(chainId);
     const prizeDistributionBufferAddress = getPrizeDistributionBufferAddress(chainId);
@@ -58,9 +58,9 @@ export async function run(chainId: string, ticket: string, drawId: string, outpu
             msg: "provider-error"
         });
         writeStatus(outputDir, chainId, drawId, statusFailure);
-        const e = Error('JsonRpcProvider Error')
-        e.code = 'PROVIDER_ERROR'
-        e.meta = error?.code // expecting ethers error code
+        const e = Error("JsonRpcProvider Error");
+        e.code = "PROVIDER_ERROR";
+        e.meta = error?.code; // expecting ethers error code
         throw e;
     }
 
@@ -81,8 +81,8 @@ export async function run(chainId: string, ticket: string, drawId: string, outpu
             msg: "subgraph-error"
         });
         writeStatus(outputDir, chainId, drawId, statusFailure);
-        const e = Error('Subgraph Error')
-        e.code = 'SUBGRAPH_ERROR'
+        const e = Error("Subgraph Error");
+        e.code = "SUBGRAPH_ERROR";
         throw e;
     }
 
@@ -96,8 +96,8 @@ export async function run(chainId: string, ticket: string, drawId: string, outpu
             msg: "unexpected-error"
         });
         writeStatus(outputDir, chainId, drawId, statusFailure);
-        const e = Error('Unexpected Error')
-        e.code = 'UNEXPECTED_ERROR'
+        const e = Error("Unexpected Error");
+        e.code = "UNEXPECTED_ERROR";
         throw e;
     }
 
@@ -144,8 +144,8 @@ export async function run(chainId: string, ticket: string, drawId: string, outpu
             msg: "invalid-prize-schema"
         });
         writeStatus(outputDir, chainId, drawId, statusFailure);
-        const e = Error('Invalid Prize Schema')
-        e.code = 'INVALID_PRIZE_SCHEMA'
+        const e = Error("Invalid Prize Schema");
+        e.code = "INVALID_PRIZE_SCHEMA";
         throw e;
     }
 
