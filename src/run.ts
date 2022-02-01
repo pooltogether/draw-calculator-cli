@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { BigNumber } from "@ethersproject/bignumber";
 import { PrizeDistribution, Draw } from "@pooltogether/draw-calculator-js";
 
@@ -24,17 +25,9 @@ import { filterUndef } from "./utils/filterUndefinedValues";
 import { normalizeUserBalances } from "./utils/normalizeUserBalances";
 import { verifyAgainstSchema } from "./utils/verifyAgainstSchema";
 
-const debug = require("debug")("pt:draw-calculator-cli");
-
 export async function run(chainId: string, ticket: string, drawId: string, outputDir: string) {
-    // Initialize the status.json file with the status and the current time in epoch miliseconds.
     const statusLoading = createStatus();
     writeStatus(outputDir, chainId, drawId, statusLoading);
-
-    debug(`Running Draw Calculator CLI tool..`);
-    const provider = getRpcProvider(chainId);
-    const drawBufferAddress = getDrawBufferAddress(chainId);
-    const prizeDistributionBufferAddress = getPrizeDistributionBufferAddress(chainId);
 
     /* -------------------------------------------------- */
     // JsonRpcProvider Fetching
@@ -43,6 +36,10 @@ export async function run(chainId: string, ticket: string, drawId: string, outpu
     let prizeDistribution: PrizeDistribution | undefined = undefined;
     let drawStartTimestamp = 0;
     let drawEndTimestamp = 0;
+
+    const provider = getRpcProvider(chainId);
+    const drawBufferAddress = getDrawBufferAddress(chainId);
+    const prizeDistributionBufferAddress = getPrizeDistributionBufferAddress(chainId);
     try {
         prizeDistribution = await getPrizeDistribution(
             prizeDistributionBufferAddress,
@@ -61,6 +58,10 @@ export async function run(chainId: string, ticket: string, drawId: string, outpu
             msg: "provider-error"
         });
         writeStatus(outputDir, chainId, drawId, statusFailure);
+        const e = Error("JsonRpcProvider Error");
+        e.code = "PROVIDER_ERROR";
+        e.meta = error?.code; // expecting ethers error code
+        throw e;
     }
 
     /* -------------------------------------------------- */
@@ -80,6 +81,9 @@ export async function run(chainId: string, ticket: string, drawId: string, outpu
             msg: "subgraph-error"
         });
         writeStatus(outputDir, chainId, drawId, statusFailure);
+        const e = Error("Subgraph Error");
+        e.code = "SUBGRAPH_ERROR";
+        throw e;
     }
 
     /* -------------------------------------------------- */
@@ -92,7 +96,9 @@ export async function run(chainId: string, ticket: string, drawId: string, outpu
             msg: "unexpected-error"
         });
         writeStatus(outputDir, chainId, drawId, statusFailure);
-        throw new Error(`Unexpected Error`);
+        const e = Error("Unexpected Error");
+        e.code = "UNEXPECTED_ERROR";
+        throw e;
     }
 
     /* -------------------------------------------------- */
@@ -138,7 +144,9 @@ export async function run(chainId: string, ticket: string, drawId: string, outpu
             msg: "invalid-prize-schema"
         });
         writeStatus(outputDir, chainId, drawId, statusFailure);
-        throw new Error(`Invalid Prize Schema`);
+        const e = Error("Invalid Prize Schema");
+        e.code = "INVALID_PRIZE_SCHEMA";
+        throw e;
     }
 
     /* -------------------------------------------------- */
