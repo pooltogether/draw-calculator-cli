@@ -74,10 +74,8 @@ This tool can be run locally or in a cloud setting.
   "createdAt": "11",
   "updatedAt": "33",
   "runtime": "22",
-  "error": {
-    "code": "1",
-    "msg": "provider-error"
-  }
+  "errorCode": "1",
+  "errorMsg": "provider-error",
 }
 ```
 
@@ -88,10 +86,8 @@ This tool can be run locally or in a cloud setting.
   "createdAt": "11",
   "updatedAt": "33",
   "runtime": "22",
-  "error": {
-    "code": "2",
-    "msg": "subgraph-error"
-  }
+  "errorCode": "2",
+  "errorMsg": "subgraph-error",
 }
 ```
 
@@ -103,10 +99,8 @@ This tool can be run locally or in a cloud setting.
   "createdAt": "11",
   "updatedAt": "33",
   "runtime": "22",
-  "error": {
-    "code": "3",
-    "msg": "unexpected-error"
-  }
+  "errorCode": "3",
+  "errorMsg": "unexpected-error"
 }
 ```
 
@@ -118,10 +112,8 @@ This tool can be run locally or in a cloud setting.
   "createdAt": "11",
   "updatedAt": "33",
   "runtime": "22",
-  "error": {
-    "code": "4",
-    "msg": "invalid-prize-schema"
-  }
+  "errorCode": "4",
+  "errorMsg": "invalid-prize-schema"
 }
 ```
 
